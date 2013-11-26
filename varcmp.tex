@@ -1,0 +1,111 @@
+\documentclass{bioinfo}
+\copyrightyear{2013}
+\pubyear{2013}
+
+\usepackage{fixltx2e}
+\usepackage{natbib}
+\bibliographystyle{apalike}
+
+\newcommand{\textssf}[1]{\textsf{\footnotesize #1}}
+
+\begin{document}
+\firstpage{1}
+
+\title{}
+
+\author[Li]{Heng Li}
+
+\address{Broad Institute of Harvard and MIT, 7 Cambridge Center, Cambridge, MA 02142, USA}
+
+\history{Received on XXXXX; revised on XXXXX; accepted on XXXXX}
+\editor{Associate Editor: XXXXXXX}
+\maketitle
+
+\begin{abstract}
+\end{abstract}
+
+\section{Results}
+
+\begin{table*}
+\footnotesize
+\processtable{Evaluated mappers and variant callers}
+{\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lllp{12cm}}
+\toprule
+Symbol & Algorithm & Version & Command line \\
+\midrule
+bt2 & bowtie2 & 2.1.0 & bowtie2 -x \emph{ref.fa} -1 \emph{read1.fq} -2 \emph{read2.fq} -X 500 \\
+bwa & bwa-backtrack & 0.7.6 & bwa aln -f \emph{read1.sai} \emph{ref.fa} \emph{read1.fq}; bwa sampe \emph{ref.fa} \emph{read1.sai} \emph{read2.sai} \emph{read1.fq} \emph{read2.fq} \\
+mem & bwa-mem & 0.7.6 & bwa mem \emph{ref.fa} \emph{read1.fq} \emph{read2.fq} \\
+fb & freebayes & 0.9.9 & freebayes -f \emph{ref.fa} \emph{aln.bam} \\
+st & samtools & 0.1.19 & samtools mpileup -Euf \emph{ref.fa} \emph{aln.bam} {\tt \char124} bcftools view -v - \\
+ug & UnifiedGenotyper & 2.7-4 & java -jar GenomeAnalysisTK.jar -T UnifiedGenotyper -R \emph{ref.fa} -I \emph{aln.bam} \mbox{-stand\_call\_conf 30} \mbox{-stand\_emit\_conf 10} \\
+hc & HaplotypeCaller & 2.7-4 & java -jar GenomeAnalysisTK.jar -T HaplotypeCaller --genotyping\_mode DISCOVERY -R \emph{ref.fa} -I \emph{aln.bam} \mbox{-stand\_call\_conf 30} \mbox{-stand\_emit\_conf 10} \\
+\botrule
+\end{tabular*}}{}
+\end{table*}
+
+\subsection{The transition-to-transversion ratio of SNPs}
+Transitions refer to {\tt A}$\Leftrightarrow${\tt G} or {\tt
+C}$\Leftrightarrow${\tt T} substitutions, while transversions refer to other
+types of substitutions. Because there are 8 types of transversions but only 4
+types of transitions, we would expect to see the ratio of transitions to
+transverions (ts/tv) is 0.5 if substitutions are independent of compositions.
+However, biologically, transitions occur more easily. Ts/tv is frequently much
+larger. For example, ts/tv of human-chimpanzee substitutions is 2.08 on
+autosomes based on Ensembl's EPO alignment v50, or 1.97 based v62. If we assume
+human SNPs arose in a similar biological process, ts/tv of SNPs should be
+around 2 as well.
+
+\subsection{Effect of mapper-caller combinations}
+
+Fig~\ref{fig:qroc1} shows ts/tv as a function of the accumulative number of
+SNPs, stratified by the SNP quality. If we assume ts/tv to be an indicator of
+FPR, we have the following observations.
+
+\begin{figure}[!hp]
+\centering\includegraphics[width=.4\textwidth]{qst/qroc-aln1}\\
+\centering\includegraphics[width=.4\textwidth]{qst/qroc-aln2}
+\caption{Effect of the combination of mappers and SNP callers. SNPs are sorted
+by their reported qualities in the descending order and evenly divided into 20
+bins. Each dot gives the transition-to-transversion ratio (ts/tv) of SNPs in a
+bin and the accumulative number of SNPs up to the bin.}\label{fig:qroc1} \end{figure}
+
+Firstly, \textssf{ug}, \textssf{hc} and \textssf{st} callers have similar
+accuracy given the same alignment and they tend to call more SNPs from the
+\textssf{mem} and \textssf{bwa} alignments than from \textssf{bt2} at similar
+ts/tv. To understand this, we extracted 155k Q100 SNPs from \textssf{mem:hc}
+that are absent from unfiltered \textssf{bt2:hc}. Interestingly, the vast
+majority of these SNPs are visiable in the \textssf{bt2} alignment, but the
+mapping quality (mapQ) of non-reference reads is consistently lower -- the
+median of the per-site mapQ average is 8 in \textssf{bt2} vs. 30 in \textssf{mem}.
+For \textssf{st}, \textssf{ug} and \textssf{hc}, the actual quality used in
+variant calling is the smaller between base quality and mapQ. The low mapQ
+prevents them from calling these SNPs from the \textssf{bowtie2} alignment.
+Looking at the alignment in an alignment viewer, we think \textssf{bowtie2} is
+usually conservative on mapQ, but we also spot cases where bwa-mem is
+overconfident in mappings with excessive substitutions. Neither mapper gives
+ideal results.
+
+A second observation is that \textssf{freebayes} is less sensitive to mappers and it
+consistently calls more SNPs than other callers. This is also caused by the way
+mapQ is used by the callers. We extracted 162k Q100 SNPs from \textssf{mem:fb}
+that are absent from unfiltered \textssf{mem:hc}. 28\% of them are only
+supported by reads with repetitive mappings, which strongly suggests that
+\textssf{freebayes} ignores mapQ during variant calling and is thus more likely
+to take differences between copies of segmental duplications as variants. As
+substitutions between copies of duplications also follow the same mutation
+process, their ts/tv should not be much different from the ts/tv of SNPs. This
+could explain why \textssf{freebayes} calls more SNPs than others at similar
+ts/tv. As the major difference between \textssf{bowtie2} and \textssf{bwa-mem}
+is the estimate of mapQ, ignoring mapQ also makes them more comparable.
+
+It is worrying that mapQ has a big impact on the results.
+
+\subsection{Effect of indel realignment and base recalibration}
+
+\begin{figure}[!hp]
+\centering\includegraphics[width=.4\textwidth]{qst/qroc-bwa1}\\
+\centering\includegraphics[width=.4\textwidth]{qst/qroc-bwa2}
+\caption{Effect of indel realignment and base recalibration.}\label{fig:qroc2} \end{figure}
+
+\end{document}
