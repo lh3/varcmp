@@ -9,20 +9,32 @@ set xran [3:4]
 set yran [0:2.4]
 
 set out "qroc-aln1.eps"
-plot "NA12878-pe.bt2.fb.fq0.qst" u ($2*1e-6):9 t "bt2:fb" ls 1 w lp, \
+plot \
+	"NA12878-pe.bt2.fb.fq0.qst" u ($2*1e-6):9 t "bt2:fb" ls 1 w lp, \
 	"NA12878-pe.bwa.fb.fq0.qst" u ($2*1e-6):9 t "bwa:fb" ls 2 w lp, \
 	"NA12878-pe.mem.fb.fq0.qst" u ($2*1e-6):9 t "mem:fb" ls 3 w lp, \
-	"NA12878-pe.bt2.hc.fq0.qst" u ($2*1e-6):9 t "bt2:hc" ls 4 w lp, \
-	"NA12878-pe.bwa.hc.fq0.qst" u ($2*1e-6):9 t "bwa:hc" ls 6 w lp, \
-	"NA12878-pe.mem.hc.fq0.qst" u ($2*1e-6):9 t "mem:hc" ls 8 w lp
+	"NA12878-pe.bt2.pt.fq0.qst" u ($2*1e-6):9 t "bt2:pt" ls 4 w lp, \
+	"NA12878-pe.bwa.pt.fq0.qst" u ($2*1e-6):9 t "bwa:pt" ls 6 w lp, \
+	"NA12878-pe.mem.pt.fq0.qst" u ($2*1e-6):9 t "mem:pt" ls 8 w lp, \
+	"NA12878-pe.mem.st1-ZB.fq0.qst" u ($2*1e-6):9 t "mem:st-noMQ" ls 11 w lp
 
 set out "qroc-aln2.eps"
-plot "NA12878-pe.bt2.st1.fq0.qst" u ($2*1e-6):9 t "bt2:st" ls 1 w lp, \
-	"NA12878-pe.bwa.st1.fq0.qst" u ($2*1e-6):9 t "bwa:st" ls 2 w lp, \
-	"NA12878-pe.mem.st1.fq0.qst" u ($2*1e-6):9 t "mem:st" ls 3 w lp, \
+plot \
+	"NA12878-pe.bt2.hc.fq0.qst" u ($2*1e-6):9 t "bt2:hc" ls 1 w lp, \
+	"NA12878-pe.bwa.hc.fq0.qst" u ($2*1e-6):9 t "bwa:hc" ls 2 w lp, \
+	"NA12878-pe.mem.hc.fq0.qst" u ($2*1e-6):9 t "mem:hc" ls 3 w lp, \
 	"NA12878-pe.bt2.ug.fq0.qst" u ($2*1e-6):9 t "bt2:ug" ls 4 w lp, \
 	"NA12878-pe.bwa.ug.fq0.qst" u ($2*1e-6):9 t "bwa:ug" ls 6 w lp, \
 	"NA12878-pe.mem.ug.fq0.qst" u ($2*1e-6):9 t "mem:ug" ls 8 w lp
+
+set out "qroc-aln3.eps"
+plot \
+	"NA12878-pe.bt2.st1.fq0.qst" u ($2*1e-6):9 t "bt2:st" ls 1 w lp, \
+	"NA12878-pe.bwa.st1.fq0.qst" u ($2*1e-6):9 t "bwa:st" ls 2 w lp, \
+	"NA12878-pe.mem.st1.fq0.qst" u ($2*1e-6):9 t "mem:st" ls 3 w lp, \
+	"NA12878-pe.bt2.st1-B.fq0.qst" u ($2*1e-6):9 t "bt2:st-noBAQ" ls 4 w lp, \
+	"NA12878-pe.bwa.st1-B.fq0.qst" u ($2*1e-6):9 t "bwa:st-noBAQ" ls 6 w lp, \
+	"NA12878-pe.mem.st1-B.fq0.qst" u ($2*1e-6):9 t "mem:st-noBAQ" ls 8 w lp
 
 set yran [1.85:2.15]
 set ylab "Accumulative ts/tv"
