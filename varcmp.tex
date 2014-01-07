@@ -45,7 +45,7 @@ mem & bwa-mem & 0.7.6 & bwa mem \emph{ref.fa} \emph{read1.fq} \emph{read2.fq} \\
 fb & freebayes & 0.9.9 & freebayes -f \emph{ref.fa} \emph{aln.bam} \\
 st & samtools & 0.1.19+ & samtools mpileup -Euf \emph{ref.fa} \emph{aln.bam} {\tt \char124} bcftools view -v - \\
 st-noBAQ & samtools & 0.1.19+ & samtools mpileup -Buf \emph{ref.fa} \emph{aln.bam} {\tt \char124} bcftools view -v - \\
-st-alt & samtools & 0.1.19+ & samtools mpileup -ZBuf \emph{ref.fa} \emph{aln.bam} {\tt \char124} bcftools view -v - \\
+sta & samtools & 0.1.19+ & samtools mpileup -ZBuf \emph{ref.fa} \emph{aln.bam} {\tt \char124} bcftools view -v - \\
 ug & UnifiedGenotyper & 2.7-4 & java -jar GenomeAnalysisTK.jar -T UnifiedGenotyper -R \emph{ref.fa} -I \emph{aln.bam} \mbox{-stand\_call\_conf 30} \mbox{-stand\_emit\_conf 10} \\
 hc & HaplotypeCaller & 2.7-4 & java -jar GenomeAnalysisTK.jar -T HaplotypeCaller --genotyping\_mode DISCOVERY -R \emph{ref.fa} -I \emph{aln.bam} \mbox{-stand\_call\_conf 30} \mbox{-stand\_emit\_conf 10} \\
 pt & Platypus & 0.5.2 & Platypus.py callVariants --bamFiles=\emph{aln.bam} --refFile=\emph{ref.fa} \\
@@ -72,9 +72,8 @@ SNPs, stratified by the SNP quality. If we assume ts/tv to be an indicator of
 FPR, we have the following observations.
 
 \begin{figure}[!hp]
-\centering\includegraphics[width=.4\textwidth]{qst/qroc-aln1}\\
-\centering\includegraphics[width=.4\textwidth]{qst/qroc-aln2}\\
-\centering\includegraphics[width=.4\textwidth]{qst/qroc-aln3}
+\centering\includegraphics[width=.4\textwidth]{qst2/qroc-CHM1-bt2}\\
+\centering\includegraphics[width=.4\textwidth]{qst2/qroc-CHM1-mem}
 \caption{Effect of the combination of mappers and SNP callers. SNPs are sorted
 by their reported qualities in the descending order and evenly divided into 20
 bins. Each dot gives the transition-to-transversion ratio (ts/tv) of SNPs in a
@@ -113,10 +112,12 @@ It is worrying that mapQ has a big impact on the results.
 
 \subsection{Effect of indel realignment and base recalibration}
 
-\begin{figure}[!hp]
-\centering\includegraphics[width=.4\textwidth]{qst/qroc-bwa1}\\
-\centering\includegraphics[width=.4\textwidth]{qst/qroc-bwa2}
-\caption{Effect of indel realignment and base recalibration.}\label{fig:qroc2} \end{figure}
+\begin{figure*}[!hp]
+\centering\includegraphics[width=.4\textwidth]{qst2/qroc-NA12878-bt2}
+\centering\includegraphics[width=.4\textwidth]{qst2/qroc-NA12878-bwa}\\
+\centering\includegraphics[width=.4\textwidth]{qst2/qroc-NA12878-mem}
+\centering\includegraphics[width=.4\textwidth]{qst2/qroc-realn-bqsr}
+\caption{Effect of indel realignment and base recalibration.}\label{fig:qroc2} \end{figure*}
 
 %\begin{figure}[!hp]
 %\includegraphics[width=.49\textwidth]{tree}
@@ -126,20 +127,20 @@ It is worrying that mapQ has a big impact on the results.
 \processtable{Relation between call sets}
 {\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccccccccccc}
 \toprule
- & bt2:fb & bt2:hc & bt2:st & bt2:ug & bwa:fb & bwa:hc & bwa:st & bwa:ug & mem:fb & mem:hc & mem:st & mem:ug \\
+ & bt2:fb & bwa:fb & bwa:hc & bwa:pt & bwa:st1 & bwa:ug & mem:fb & mem:hc & mem:pt & mem:st & mem:sta & mem:ug \\
 \midrule
-bt2:fb & {\bf 3831839} & 0.879/1.7 & 0.907/1.6 & 0.891/1.7 & {\bf 0.975}/1.5 & 0.920/1.6 & 0.933/1.5 & 0.925/1.6 & {\bf 0.970}/1.5 & 0.928/1.6 & 0.938/1.5 & 0.930/1.6 \\
-bt2:hc & 0.987/0.9 & {\bf 3414862} & 0.983/0.9 & 0.985/1.5 & 0.987/0.9 & {\bf 0.997}/1.8 & 0.983/0.9 & 0.988/1.4 & 0.985/0.9 & {\bf 0.996}/1.9 & 0.983/0.9 & 0.988/1.3 \\
-bt2:st & {\bf 0.993}/0.8 & 0.959/1.6 & {\bf 3501389} & 0.966/1.6 & {\bf 0.991}/1.0 & 0.981/1.3 & {\bf 0.994}/1.0 & 0.984/1.3 & {\bf 0.989}/1.0 & 0.983/1.3 & {\bf 0.992}/1.0 & 0.985/1.2 \\
-bt2:ug & {\bf 0.985}/0.8 & 0.970/1.3 & 0.976/0.9 & {\bf 3465657} & 0.983/0.8 & 0.978/1.1 & 0.975/0.9 & {\bf 0.990}/1.1 & 0.979/0.9 & 0.978/1.1 & 0.974/0.9 & {\bf 0.986}/1.1 \\
-bwa:fb & {\bf 0.977}/1.3 & 0.881/1.7 & 0.907/1.6 & 0.890/1.7 & {\bf 3826595} & 0.923/1.6 & 0.938/1.4 & 0.932/1.6 & {\bf 0.972}/1.4 & 0.929/1.6 & 0.938/1.5 & 0.932/1.6 \\
-bwa:hc & 0.984/0.9 & 0.950/1.8 & 0.959/1.3 & 0.946/1.7 & 0.985/0.9 & {\bf 3583492} & 0.980/0.9 & 0.980/1.5 & 0.982/1.0 & {\bf 0.993}/1.6 & 0.979/1.0 & 0.981/1.3 \\
-bwa:st & {\bf 0.990}/1.2 & 0.929/1.8 & 0.964/1.9 & 0.936/1.8 & {\bf 0.993}/1.1 & 0.972/1.6 & {\bf 3612146} & 0.974/1.7 & 0.987/1.3 & 0.974/1.6 & {\bf 0.990}/1.6 & 0.976/1.5 \\
-bwa:ug & 0.977/0.7 & 0.930/1.5 & 0.949/1.1 & 0.946/1.5 & {\bf 0.983}/0.6 & 0.968/1.1 & 0.970/0.8 & {\bf 3628793} & 0.975/0.8 & 0.966/1.1 & 0.966/0.9 & {\bf 0.980}/1.0 \\
-mem:fb & {\bf 0.984}/1.5 & 0.891/1.7 & 0.917/1.6 & 0.899/1.7 & {\bf 0.985}/1.6 & 0.932/1.6 & 0.944/1.5 & 0.937/1.7 & {\bf 3775292} & 0.942/1.6 & 0.953/1.5 & 0.946/1.6 \\
-mem:hc & {\bf 0.985}/0.9 & 0.942/1.8 & 0.953/1.4 & 0.938/1.7 & {\bf 0.984}/0.9 & {\bf 0.985}/1.7 & 0.974/1.1 & 0.971/1.6 & {\bf 0.984}/0.9 & {\bf 3612515} & {\bf 0.980}/0.9 & {\bf 0.981}/1.4 \\
-mem:st & {\bf 0.992}/1.2 & 0.927/1.8 & 0.959/1.8 & 0.932/1.8 & {\bf 0.991}/1.4 & 0.968/1.7 & 0.987/1.7 & 0.968/1.7 & {\bf 0.994}/1.2 & 0.978/1.7 & {\bf 3621684} & 0.979/1.6 \\
-mem:ug & {\bf 0.985}/0.9 & 0.932/1.7 & 0.952/1.3 & 0.944/1.7 & {\bf 0.986}/0.9 & 0.971/1.4 & 0.974/1.0 & {\bf 0.983}/1.7 & {\bf 0.987}/0.8 & 0.979/1.3 & 0.979/0.9 & {\bf 3619760} \\
+bt2:fb & {\bf 3831839} & {\bf 0.975}/1.5 & 0.920/1.6 & 0.928/1.6 & 0.933/1.5 & 0.925/1.6 & {\bf 0.970}/1.5 & 0.928/1.6 & 0.931/1.6 & 0.938/1.5 & 0.966/1.5 & 0.930/1.6 \\
+bwa:fb & {\bf 0.977}/1.3 & {\bf 3826595} & 0.923/1.6 & 0.934/1.6 & 0.938/1.4 & 0.932/1.6 & {\bf 0.972}/1.4 & 0.929/1.6 & 0.933/1.6 & 0.938/1.5 & 0.967/1.5 & 0.932/1.6 \\
+bwa:hc & 0.984/0.9 & 0.985/0.9 & {\bf 3583492} & 0.984/1.5 & 0.980/0.9 & 0.980/1.5 & 0.982/1.0 & {\bf 0.993}/1.6 & 0.982/1.4 & 0.979/1.0 & {\bf 0.990}/1.3 & 0.981/1.3 \\
+bwa:pt & 0.973/1.0 & {\bf 0.978}/0.9 & 0.966/1.3 & {\bf 3652743} & 0.966/1.0 & {\bf 0.975}/1.4 & 0.970/1.0 & 0.963/1.3 & {\bf 0.977}/1.4 & 0.962/1.1 & {\bf 0.979}/1.3 & 0.969/1.3 \\
+bwa:st1 & {\bf 0.990}/1.2 & {\bf 0.993}/1.1 & 0.972/1.6 & 0.977/1.7 & {\bf 3612146} & 0.974/1.7 & 0.987/1.3 & 0.974/1.6 & 0.976/1.6 & {\bf 0.990}/1.6 & {\bf 0.989}/1.4 & 0.976/1.5 \\
+bwa:ug & 0.977/0.7 & {\bf 0.983}/0.6 & 0.968/1.1 & {\bf 0.981}/1.0 & 0.970/0.8 & {\bf 3628793} & 0.975/0.8 & 0.966/1.1 & 0.974/1.1 & 0.966/0.9 & {\bf 0.986}/0.9 & 0.980/1.0 \\
+mem:fb & {\bf 0.984}/1.5 & {\bf 0.985}/1.6 & 0.932/1.6 & 0.938/1.7 & 0.944/1.5 & 0.937/1.7 & {\bf 3775292} & 0.942/1.6 & 0.946/1.7 & 0.953/1.5 & {\bf 0.985}/1.5 & 0.946/1.6 \\
+mem:hc & 0.985/0.9 & 0.984/0.9 & 0.985/1.7 & 0.974/1.5 & 0.974/1.1 & 0.971/1.6 & 0.984/0.9 & {\bf 3612515} & 0.984/1.4 & 0.980/0.9 & {\bf 0.992}/1.2 & 0.981/1.4 \\
+mem:pt & 0.983/0.9 & 0.983/0.9 & 0.969/1.4 & 0.983/1.6 & 0.971/1.0 & 0.973/1.5 & 0.984/0.8 & 0.978/1.3 & {\bf 3631994} & 0.976/0.9 & {\bf 0.994}/1.2 & 0.984/1.2 \\
+mem:st & {\bf 0.992}/1.2 & {\bf 0.991}/1.4 & 0.968/1.7 & 0.970/1.7 & 0.987/1.7 & 0.968/1.7 & {\bf 0.994}/1.2 & 0.978/1.7 & 0.979/1.7 & {\bf 3621684} & {\bf 0.996}/1.2 & 0.979/1.6 \\
+mem:sta & {\bf 0.975}/1.0 & 0.974/1.1 & 0.934/1.5 & 0.942/1.6 & 0.941/1.3 & 0.942/1.6 & {\bf 0.980}/0.9 & 0.944/1.5 & 0.951/1.6 & 0.950/1.2 & {\bf 3797069} & 0.952/1.6 \\
+mem:ug & 0.985/0.9 & 0.986/0.9 & 0.971/1.4 & 0.978/1.6 & 0.974/1.0 & 0.983/1.7 & 0.987/0.8 & 0.979/1.3 & 0.987/1.5 & 0.979/0.9 & {\bf 0.998}/1.4 & {\bf 3619760} \\
 \botrule
 \end{tabular*}}{}
 \end{table*}

@@ -8,11 +8,11 @@
 
 all:varcmp.pdf
 
-varcmp.pdf:varcmp.tex varcmp.bib qst/qroc-aln1.pdf qst/qroc-aln2.pdf qst/qroc-aln3.pdf qst/qroc-bwa1.pdf qst/qroc-bwa2.pdf tree.pdf
+varcmp.pdf:varcmp.tex varcmp.bib qst2/qroc-CHM1-bt2.pdf qst2/qroc-CHM1-mem.pdf qst2/qroc-NA12878-bt2.pdf qst2/qroc-NA12878-bwa.pdf qst2/qroc-NA12878-mem.pdf qst2/qroc-realn-bqsr.pdf tree.pdf
 		pdflatex varcmp; bibtex varcmp; pdflatex varcmp; pdflatex varcmp;
 
-qst/qroc-aln1.eps qst/qroc-aln2.eps qst/qroc-aln3.eps qst/qroc-bwa1.eps qst/qroc-bwa2.eps:qst/qroc.gp
-		(cd qst; gnuplot qroc.gp)
+qst2/qroc-CHM1-bt2.eps qst2/qroc-CHM1-mem.eps qst2/qroc-NA12878-bt2.eps qst2/qroc-NA12878-bwa.eps qst2/qroc-NA12878-mem.eps qst2/qroc-realn-bqsr.eps:
+		(cd qst2; gnuplot plot.gp)
 
 clean:
 		rm -fr *.toc *.aux *.bbl *.blg *.idx *.log *.out *~ varcmp.pdf alnroc-?e.{eps,pdf}
