@@ -108,8 +108,8 @@ function read_bed(fn)
  *** Main entry ***
  ******************/
 
-var c, min_dp = 10, max_dp = -1, min_da = 5, min_r = .2, min_q = 0., min_sda = 1, str = null, mapa = null, dup = null, depth_only = false;
-while ((c = getopt(arguments, 'd:a:r:q:D:s:Q:t:m:c:O')) != null) {
+var c, min_dp = 10, max_dp = -1, min_da = 5, min_r = .2, min_q = 0., min_sda = 1, str = null, mapa = null, dup = null, depth_only = false, hard_q = 3.;
+while ((c = getopt(arguments, 'd:a:r:q:D:s:Q:t:m:c:OQ:')) != null) {
 	if (c == 'd') min_dp = parseInt(getopt.arg);
 	else if (c == 'a') min_da = parseInt(getopt.arg);
 	else if (c == 'r') min_r = parseFloat(getopt.arg);
@@ -120,6 +120,7 @@ while ((c = getopt(arguments, 'd:a:r:q:D:s:Q:t:m:c:O')) != null) {
 	else if (c == 'm') mapa = read_bed(getopt.arg);
 	else if (c == 'c') dup = read_bed(getopt.arg);
 	else if (c == 'O') depth_only = true;
+	else if (c == 'Q') hard_q = parseFloat(getopt.arg);
 }
 
 var file = arguments.length > getopt.ind? new File(arguments[getopt.ind]) : new File();
@@ -136,6 +137,7 @@ while (file.readline(buf) >= 0) {
 	var t = buf.toString().split("\t");
 	t[1] = parseInt(t[1]);
 	var qual = parseFloat(t[5]);
+	if (qual < hard_q) continue;
 	var f = 0, nf = 0;
 	if (qual < min_q) f |= flag.lowQual, ++nf;
 	// extract depth information

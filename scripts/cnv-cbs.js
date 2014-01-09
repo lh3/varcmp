@@ -80,10 +80,11 @@ function cnv_cbs(chr, a, thres, winsize) // recursively cut
 		if (b == e) return;
 		var t = a.slice(b, e);
 		t.sort(function(x,y){return x[1]-y[1]}); // sort to compute the median
-		print(chr, t[0][0], t[t.length-1][0] + 1, t.length, t[Math.floor(t.length/2)][1]);
+		print(chr, a[b][0], a[e-1][0] + 1, t.length, t[Math.floor(t.length/2)][1]);
 	}
 
 	warn("Processing chromsome " + chr + "...");
+	a.sort(function(x,y){return x[0]-y[0]});
 	var queue = [[0, a.length, -1]];
 	while (queue.length) {
 		var e = queue.shift();
@@ -106,7 +107,7 @@ function cnv_cbs(chr, a, thres, winsize) // recursively cut
 
 function main(args)
 {
-	var c, thres = 3., winsize = 100;
+	var c, winsize = 200, thres = 3.891; // 3.891 is equivalent to P-value 1e-4
 	while ((c = getopt(args, 't:w:')) != null) {
 		if (c == 't') thres = parseFloat(getopt.arg);
 		else if (c == 'w') winsize = parseInt(getopt.arg);
