@@ -108,8 +108,8 @@ function read_bed(fn)
  *** Main entry ***
  ******************/
 
-var c, min_dp = 10, max_dp = -1, min_da = 5, min_r = .2, min_q = 0., min_sda = 1, str = null, mapa = null, dup = null;
-while ((c = getopt(arguments, 'd:a:r:q:D:s:Q:t:m:c:')) != null) {
+var c, min_dp = 10, max_dp = -1, min_da = 5, min_r = .2, min_q = 0., min_sda = 1, str = null, mapa = null, dup = null, depth_only = false;
+while ((c = getopt(arguments, 'd:a:r:q:D:s:Q:t:m:c:O')) != null) {
 	if (c == 'd') min_dp = parseInt(getopt.arg);
 	else if (c == 'a') min_da = parseInt(getopt.arg);
 	else if (c == 'r') min_r = parseFloat(getopt.arg);
@@ -119,6 +119,7 @@ while ((c = getopt(arguments, 'd:a:r:q:D:s:Q:t:m:c:')) != null) {
 	else if (c == 't') str = read_bed(getopt.arg);
 	else if (c == 'm') mapa = read_bed(getopt.arg);
 	else if (c == 'c') dup = read_bed(getopt.arg);
+	else if (c == 'O') depth_only = true;
 }
 
 var file = arguments.length > getopt.ind? new File(arguments[getopt.ind]) : new File();
@@ -171,6 +172,10 @@ while (file.readline(buf) >= 0) {
 		daf = m1[max_j]; dar = m2[max_j];
 		da = daf + dar;
 		dr = w[max_j] - da;
+	} else if ((m = /QSUM=(\d+)/.exec(t[7])) != null) { // fermi2+mpileup+plp2var+var2vcf
+		depth = parseInt(m[1]);
+		da = parseInt(t[5]);
+		dr = depth - da;
 	} else warn("Unrecognized format at line " + lineno + ":\n" + buf.toString());
 	// set flag
 	if (da >= 0 && dr >= 0) {
@@ -196,7 +201,8 @@ while (file.readline(buf) >= 0) {
 	var flt = "0x" + f.toString(16) + ';' + nf;
 	if (t[6] == "PASS" || t[6] == ".") t[6] = flt;
 	else t[6] = flt + ";" + t[6];
-	print(t.join("\t"));
+	if (depth_only) print(t[0], t[1], depth);
+	else print(t.join("\t"));
 }
 
 buf.destroy();
