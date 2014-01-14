@@ -36,60 +36,36 @@ var getopt = function(args, ostr) {
 	return optopt;
 }
 
-var c, min_alt_cnt = 0, min_alt_frac = 0., show_depth = false;
-while ((c = getopt(arguments, 'c:df:')) != null)
-	if (c == 'c') min_alt_cnt = parseInt(getopt.arg);
-	else if (c == 'd') show_depth = true;
-	else if (c == 'f') min_alt_frac = parseFloat(getopt.arg);
+var c, bound = 3.;
+while ((c = getopt(arguments, 'b:')) != null)
+	if (c == 'b') bound = parseFloat(getopt.arg);
 
 var file = arguments.length > getopt.ind? new File(arguments[getopt.ind]) : new File();
 var buf = new Bytes();
+var a = [];
 
 while (file.readline(buf) >= 0) {
 	var t = buf.toString().split("\t");
-	if (!/[ACGTacgt]/.test(t[4])) continue;
-	t[2] = t[2].toUpperCase();
-	var i = 0, j = 0;
-	var alleles = {}, cnt = [], sum = 0, alt_cnt = 0, depth = 0;
-	while (i < t[4].length && j < t[5].length) {
-		var b = t[4].charAt(i);
-		if (b == '$') { ++i; continue; }
-		if (b == '^') { i += 2; continue; }
-		if (b == '*') { ++i, ++j; continue; }
-
-		++depth;
-		var a, q, forward;
-		var match = /[.,A-Za-z]([+-](\d+)[A-Za-z])?/.exec(t[4].substr(i));
-		if (b == '.') b = t[2].toUpperCase();
-		else if (b == ',') b = t[2].toLowerCase();
-		forward = (b.charCodeAt(0) < 97);
-		q = t[5].charCodeAt(j) - 33;
-		var l_int = 0, l = 0;
-		if (match[1] != null) {
-			l_int = match[2].length + 1; // including +/-
-			l = parseInt(match[2]);
-			a = (b + t[4].substr(i + 1, l_int +l)).toUpperCase();
-		} else a = b.toUpperCase();
-		i += 1 + l_int + l;
-		++j;
-
-		var ci;
-		if (alleles[a] == null) alleles[a] = cnt.length, cnt.push([a, 0, 0, 0, 0]);
-		ci = alleles[a];
-		++cnt[ci][forward? 1 : 2];
-		cnt[ci][forward? 3 : 4] += q;
-		sum += q;
-		if (a != t[2]) ++alt_cnt;
-	}
-	if (min_alt_cnt > 0 && alt_cnt < min_alt_cnt) continue;
-	if (min_alt_frac > 0 && alt_cnt < depth * min_alt_frac) continue;
-	
-	var out = [t[0], t[1], t[2], show_depth? depth : sum, cnt.length];
-	for (var i = 0; i < cnt.length; ++i)
-		for (var j = 0; j < 5; ++j)
-			out.push(cnt[i][j]);
-	print(out.join("\t"));
+	for (var i = 1; i < t.length; ++i)
+		t[i] = parseInt(t[i]);
+	t[5] = t[4] + Math.random() - .5;
+	a.push(t);
 }
+
+a.sort(function(x,y){return x[5]-y[5]});
+
+var b = [];
+for (var i = 0; i < a.length; ++i)
+	for (var j = 0; j < a[i][3]; ++j)
+		b.push(a[i][5]);
+
+var p25 = b[Math.floor(b.length * .25)];
+var p75 = b[Math.floor(b.length * .75)];
+var cutoff = p75 + bound * (p75 - p25);
+warn(p25, p75, cutoff);
+
+for (var i = 0; i < a.length; ++i)
+	if (a[i][4] > cutoff) print(a[i].slice(0, 3).join("\t"));
 
 buf.destroy();
 file.close();

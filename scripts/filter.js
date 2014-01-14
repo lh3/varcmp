@@ -151,12 +151,12 @@ while (file.readline(buf) >= 0) {
 		da = daf + dar;
 	} else if (/^GT:DP:RO:QR:AO/.test(t[8])) { // freebayes; no daf/dar
 		m = /^\d\/\d:\d+:(\d+):\d+:(\d+)/.exec(t[9]);
-		dr = parseInt(t[1]);
-		da = parseInt(t[2]);
+		dr = parseInt(m[1]);
+		da = parseInt(m[2]);
 	} else if (/GT:AD/.test(t[8])) { // GATK; no daf/dar
 		m = /^\d\/\d:(\d+),(\d+)/.exec(t[9]);
-		dr = parseInt(t[1]);
-		da = parseInt(t[2]);
+		dr = parseInt(m[1]);
+		da = parseInt(m[2]);
 	} else if (/^GT:GL:GOF:GQ:NR:NV/.test(t[8])) { // Platypus; depth inaccurate
 		m = /NF=([\d,]+).*NR=([\d,]+)/.exec(t[7]);
 		var m1 = m[1].split(",");
