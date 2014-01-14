@@ -35,7 +35,7 @@ others.
 \begin{table*}
 \footnotesize
 \processtable{Evaluated mappers and variant callers}
-{\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lllp{12cm}}
+{\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lp{1.8cm}lp{12.5cm}}
 \toprule
 Symbol & Algorithm & Version & Command line \\
 \midrule
@@ -44,11 +44,14 @@ bwa & bwa-backtrack & 0.7.6 & bwa aln -f \emph{read1.sai} \emph{ref.fa} \emph{re
 mem & bwa-mem & 0.7.6 & bwa mem \emph{ref.fa} \emph{read1.fq} \emph{read2.fq} \\
 fb & freebayes & 0.9.9 & freebayes -f \emph{ref.fa} \emph{aln.bam} \\
 st & samtools & 0.1.19+ & samtools mpileup -Euf \emph{ref.fa} \emph{aln.bam} {\tt \char124} bcftools view -v - \\
-st-noBAQ & samtools & 0.1.19+ & samtools mpileup -Buf \emph{ref.fa} \emph{aln.bam} {\tt \char124} bcftools view -v - \\
-sta & samtools & 0.1.19+ & samtools mpileup -ZBuf \emph{ref.fa} \emph{aln.bam} {\tt \char124} bcftools view -v - \\
 ug & UnifiedGenotyper & 2.7-4 & java -jar GenomeAnalysisTK.jar -T UnifiedGenotyper -R \emph{ref.fa} -I \emph{aln.bam} \mbox{-stand\_call\_conf 30} \mbox{-stand\_emit\_conf 10} \\
 hc & HaplotypeCaller & 2.7-4 & java -jar GenomeAnalysisTK.jar -T HaplotypeCaller --genotyping\_mode DISCOVERY -R \emph{ref.fa} -I \emph{aln.bam} \mbox{-stand\_call\_conf 30} \mbox{-stand\_emit\_conf 10} \\
 pt & Platypus & 0.5.2 & Platypus.py callVariants --bamFiles=\emph{aln.bam} --refFile=\emph{ref.fa} \\
+fm2:plp & fermi2 +bwa-mem +pileup & & ropebwt2 -d \emph{reads.fq} -o \emph{reads.fmd}; fermi2 correct \emph{reads.fmd} \emph{reads.fq} {\tt \char124} \emph{ec.fq};
+	ropebwt2 -d \emph{ec.fq} -o \emph{ec.fmd}; fermi2 occflt \emph{ec.fmd} {\tt \char124} \emph{ec.sub}; fermi2 sub -c \emph{ec.fmd} \emph{ec.sub} {\tt \char124} \emph{ec.flt.fmd};
+	fermi2 assemble -l 50 \emph{ec.flt.fmd} {\tt \char124} \emph{ec.mag}; fermi2 clean -CS \emph{ec.mag} {\tt \char124} \emph{unitig.mag};
+	bwa mem -B9 -O16 -E1 \emph{unitig.mag} {\tt \char124} \emph{untig.sam};
+	samtools mpileup -Q5 -q40 \emph{unitig.bam} \\
 \botrule
 \end{tabular*}}{}
 \end{table*}
