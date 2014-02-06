@@ -32,20 +32,20 @@
     <defs
        id="defs1">
       <pattern
-         patternUnits="userSpaceOnUse"
-         y="0.5"
-         height="11"
-         id="pattern1"
+         width="11.5"
          x="0"
-         width="11.5">
+         id="pattern1"
+         height="11"
+         y="0.5"
+         patternUnits="userSpaceOnUse">
         <image
-           id="image3079"
-           xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAAUElEQVR42mP8DwQM RADGKY0MTMQq/J9TT5xiGGAhZCIIgEzFqxhmNV6TTwBxamMJg8XPf4SdYQmyWpgX w1QMxdisxlCM7hFcgLSgI2Q1MgAAVdYe34Vnaa0AAAAASUVORK5CYII="
-           height="11"
-           y="0"
-           width="11"
+           preserveAspectRatio="none"
            x="0"
-           preserveAspectRatio="none" />
+           width="11"
+           y="0"
+           height="11"
+           xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAAUElEQVR42mP8DwQM RADGKY0MTMQq/J9TT5xiGGAhZCIIgEzFqxhmNV6TTwBxamMJg8XPf4SdYQmyWpgX w1QMxdisxlCM7hFcgLSgI2Q1MgAAVdYe34Vnaa0AAAAASUVORK5CYII="
+           id="image3079" />
       </pattern>
     </defs>
     <g
@@ -226,6 +226,6 @@
        style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Helvetica"><tspan
          x="16"
          y="580.36218"
-         id="tspan3411">s</tspan></text>
+         id="tspan3411" /></text>
   </g>
 </svg>
