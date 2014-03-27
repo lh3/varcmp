@@ -18,4 +18,4 @@ qst5/roc1-co4.eps:qst5/plot-co-w-DP4.gp
 		(cd qst5; gnuplot plot-co-w-DP4.gp)
 
 clean:
-		rm -fr *.toc *.aux *.bbl *.blg *.idx *.log *.out *~ varcmp.pdf alnroc-?e.{eps,pdf}
+		rm -fr *.toc *.aux *.bbl *.blg *.idx *.log *.out *~ varcmp.pdf alnroc-?e.{eps,pdf} qst5/hist-snp.* qst5/hist-indel.* qst5/roc1-co4.*

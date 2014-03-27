@@ -25,7 +25,7 @@
 \section{Motivation:} Whole-genome high-coverage sequencing has been widely
 used for personal and cancer genomics as well as in various research areas.
 However, in the lack of an unbiased whole-genome truth set, the global error
-rate of variant calls and the leading casual artifacts still remain unclear
+rate of variant calls and the leading causal artifacts still remain unclear
 even given the great efforts in the evaluation of variant calling methods.
 
 \section{Results:} We made ten SNP and INDEL call sets with two read mappers
@@ -47,15 +47,15 @@ additional data: http://figshare.com/account/projects/1013.
 
 \section{Introduction}
 
-Since the sequencing of the first personal genome~\citep{Levy:2007uq}, and in
+Since the sequencing of the first personal genome~\citep{Levy:2007uq} and in
 particular the first genomes sequenced with the Illumina
 technologies~\citep{Bentley:2008cr,Wang:2008nx}, resequencing has been widely
 used for personal and cancer genomics~\citep{Watson:2013aa}, for the discovery
 of de novo mutations associated with Mendelian diseases~\citep{Bamshad:2011aa},
 for the reconstruction of human population history~\citep{Li:2011ij} and for
 the understanding of mutation processes~\citep{Veltman:2012aa,Campbell:2013aa}.
-In most of these studies, mapping based variant calling plays a central role.
-The accuracy of SNP/INDEL calling has a fundamental impact on the biological
+In most of these studies, mapping based SNP/INDEL calling plays a central role.
+The accuracy of the calls has a fundamental impact on the biological
 interpretation. In this context, various research groups have attempted to
 evaluate the performance of variant calling or to build a benchmark data set
 for evaluation.
@@ -63,27 +63,27 @@ for evaluation.
 The simplest approach to the evaluation of variant calling is to simulate
 variants and reads from a reference genome~\citep{Li:2008zr}. However, we are
 unable to simulate various artifacts such as the non-random distribution of
-variants dependent errors, incomplete reference genome and copy number
+variants, dependent errors, incomplete reference genome and copy number
 variations. An improved version is to incorporate real variants instead of
 using simulated variants~\citep{Talwalkar:2013aa}, but it does not address the
 artifacts caused by large-scale effects, either. A better simulation is to take
 the reads sequenced from one sample with a finished genome, map them to another
-finished genome, call variants and then compare the calls to the whole-genome
+finished genome, call variants and then compare the calls to the differences found by genome-to-genome
 alignment~\citep{Li:2008zr}. However, this approach is limited to small haploid
 genomes. There are attempts to apply a similar idea to mammalian
 genomes~\citep{Li:2013ab,Bolosky:2014aa}, but as the mammalian reference
 genomes are frequently incomplete and the whole-genome alignment is imperfect,
 such a simulation is still different from realistic scenarios.
 
-The difficulties in simulation has motivated us to focus more on real data. One
+The difficulties in simulation have motivated us to focus more on real data. One
 simple approach is to thoroughly sequence a small target region with mature
-technologies, such as the Sanger technology, and take the resultant sequence as
+technologies, such as the Sanger sequencing technology, and take the resultant sequence as
 the ground truth~\citep{Harismendy:2009aa}. It does not capture large-scale
 artifacts, though. Another more commonly used method is to measure accuracy
 either by comparing variant calls from different pipelines, or by comparing
-calls to variants ascertained with genotyping or in another
+calls to variants ascertained with array genotyping or in another
 study~\citep{Clark:2011aa,Li:2012fk,Lam:2012aa,Lam:2012fk,Boland:2013aa,Liu:2013aa,Goode:2013aa,ORawe:2013aa,Zook:2014aa}.
-However, array genotyping might have a higher error rate per assayed site than
+However, array genotyping may have a higher error rate per assayed site than
 the variant calling error rate~\citep{Bentley:2008cr}; simply comparing call
 sets would only give us an estimate of the relative accuracy -- if two
 pipelines are affected by the same artifact that a third pipeline does
@@ -97,17 +97,17 @@ variants with MiSeq or Sanger sequencing or Sequenom genotyping. Nonetheless,
 such experiments are biased towards easier regions and may also be subjected
 to other artifacts such as on-primer variants and non-specific amplification
 (the 1000 Genomes Project analysis subgroup, personal communication). For a
-recent example, although~\citet{Li:2011ac} have validated multiple non-A-to-I
-RNA editing sites with Sanger sequencing, many~\citep{Pickrell:2012aa} show
-strong evidence that non-A-to-I editings are technical artifacts. Sanger
+recent example, although~\citet{Li:2011ac} have validated multiple \mbox{non-A-to-I}
+RNA editing sites with Sanger sequencing, many~(e.g. \Citealt{Pickrell:2012aa}) show
+strong evidence that \mbox{non-A-to-I} editings are technical artifacts. Sanger
 sequencing should not be taken as the ground truth.
 
-In the author's view, a better approach to the evaluation of variant calling is
-to compare samples from a pedigree~\citep{Zook:2014aa}, or from the same
+In the author's view, it is better to evaluate variant calling by
+comparing samples from a pedigree~\citep{Zook:2014aa}, or from the same
 individual~\citep{Nickles:2012aa}, including cancer
 samples~\citep{Lower:2012aa}. Because we expect to see only tens to hundreds of
-somatic mutations or Mendelian errors per genome, most other inconsistencies
-are very likely to be errors. However, this design is insensitive to systematic
+somatic mutations or Mendelian errors per genome~\citep{Conrad:2011kx}, most other inconsistencies
+are very likely to be errors. However, this method is insensitive to systematic
 errors.  If at a locus, a caller finds erroneous heterozygotes in all samples,
 the errors wouldn't be identified.
 
@@ -213,8 +213,8 @@ We repeated this procedure until no overlapping variants remain.
 different callers may produce different genotypes. For example, SAMtools
 estimates genotypes assuming the prior of seeing a heterozygote being $10^{-3}$,
 but GATK does not apply a prior. GATK is more likely to call a heterozygote
-than SAMtools. Genotype calling for a single sample is a relatively simple
-step. To avoid the difference in this simple step complicating the final
+than SAMtools. Genotype calling for a single sample is relatively simple.
+To avoid the subtle difference in this simple step complicating the final
 results, we re-call the genotypes from genotype likelihoods provided by the
 callers.  We multiplied $10^{-3}$ to the likelihood of heterozygotes and then
 called the genotype with the maximal likelihood.
@@ -226,13 +226,13 @@ kept the reported genotypes in the VCF.
 report a variant composed of multiple SNPs and/or INDELs. We decomposed such
 variants into individual events such that the results are more comparable.
 FreeBayes uses a CIGAR string to describe how a complex variant is aligned to
-the reference. We used the CIGAR to extract SNPs and INDELs. Platypus does not
+the reference. We extracted SNPs and INDELs from the CIGAR. Platypus does not
 report CIGAR. We assumed the variant allele is always left aligned to the
 reference allele when decomposing a complex variant.
 
 \subsection{Variant filtering}\label{sec:flt}
 
-All the callers used in this study come with filtering programs or recommend a
+All the callers used in this study come with filtering programs or a recommended
 set of filters. However, applying caller-specific filters may complicate
 comparison and obscure artifacts. We decided to choose several universal
 filters applicable to most callers:
@@ -243,7 +243,7 @@ filters applicable to most callers:
 low-complexity regions (LCRs) identified with the mdust program
 (http://bit.ly/mdust-LC), which is a stand-alone implementation of the DUST
 algorithm first used by BLAST. In GRCh37, 2.0\% of A/C/G/T bases on autosomes
-are identified to be in LCRs.
+are identified to be LCRs.
 
 \item Maximum depth filter (DP): filtering sites covered by excessive number of
 reads. It should be noted that different callers may define the depth
@@ -257,7 +257,7 @@ non-reference reads is too low.
 \item Double strand filter (DS): filtering variants if either the number of
 non-reference reads on the forward strand or on the reverse strand is below a
 certain threshold. This filter is not applicable to GATK calls as GATK does not
-report these numbers. It has been identified to be an effective filter on
+report these numbers. DS has been identified to be an effective filter on
 cancer data~\citep{Roberts:2013aa,Kim:2013aa}.
 
 \item Fisher strand filter (FS): filtering sites where the numbers of
@@ -285,7 +285,7 @@ filters are caller dependent.
 \subsection{Measuring accuracy}
 
 The CHM1 and the NA12878 data sets share many properties. They are both
-sequenced with 100bp Illumina reads to a similar coverage without the PCR
+sequenced with 100bp Illumina reads to a similar coverage after the removal of PCR
 duplicates. The number of called variants per haplotype is also very close,
 usually within 1\% difference according to multiple call sets. Under this
 observation, it is reasonable to assume the number of heterozygous errors in
@@ -293,12 +293,12 @@ NA12878 is also close to the number of heterozygous calls in CHM1. As a result,
 we may take $N_h/N_d$ as an estimate of the false positive rate (FPR) of
 heterozygotes, and $N_d-N_h$ as a proxy to sensitivity, where $N_h$ is the
 number of heterozygous calls in CHM1 and $N_d$ the number in NA12878. This
-might be the first time that we can unbiasedly measure the false positive rate
+might be the first time that we can unbiasedly measure FPR
 in a whole genome call set.
 
 \subsection{Manual review}
 
-To understand the major error modes, we have manually reviewed over 100
+To understand the major error modes, we have manually reviewed more than 200
 heterozygous INDELs called by different callers from CHM1. For these sites,
 we displayed the alignment with SAMtools' tview alignment viewer to get a sense
 of the alignment quality, obvious positional biases and the complexity of the
@@ -308,7 +308,7 @@ extracted reads with fermi~\citep{Li:2012fk} version 1.1 and mapped the
 assembled contigs back to the reference genome with BWA-MEM. Fermi tries to
 preserve heterozygotes. If the INDELs are truly heterozygous, we will typically
 see two contigs covering a site, one for each allele. We used the local
-assembly as an orthogonal approach to confirm heterozygous calls.
+assembly as an orthogonal approach to validate heterozygous calls.
 
 %Fermi requires exact read overlaps and makes use of topological information to
 %clean errors~\citep{Zerbino:2008uq}. On the reviewed sites, it often works
@@ -380,7 +380,7 @@ Figure~\ref{fig:venn-CHM1} suggests the latter is the case.
 
 We also manually reviewed tens of heterozygotes called by multiple callers both
 on the data in this study and on Illumina data generated from other libraries
-(AC:SRR642626--SRR642635 and AC:SRR642750) mapped with the original BWA
+(AC:SRR642626--SRR642635 and AC:SRR642750), which were mapped with the original BWA
 algorithm~\citep{Li:2009uq} by the 1000 Genomes Project analysis group. It
 appears to us that more than half of SNPs look evident in the alignment viewer,
 but many INDELs in low-complexity regions look like systematic errors called by
@@ -389,9 +389,9 @@ heterozygotes in CHM1 with strong alignment support from multiple Illumina
 libraries. It is hard to get a more accurate estimate or to further tell the
 sources of these heterozygotes with the data we are using. As we were writing up
 this work, Pacific Biosciences released deep resequencing data for the CHM1
-cell line. It would be very useful to isolate errors caused by the Illumina
+cell line. It could be used to isolate errors caused by the Illumina
 sample preparation and sequencing. However, mapping and variant calling from
-PacBio human data is in the early phase. We decided to leave out the comparison
+PacBio human data is still in the early phase. We decided to leave out the comparison
 to the PacBio data for now.
 
 Anyway, even if we assume the variant calls in the intersection are all present
@@ -437,7 +437,7 @@ heterozygous INDELs (Figure~\ref{fig:hist}) inserted to or deleted from long
 poly-A or poly-T runs, which may be due to PCR errors. Although most callers
 deploy advanced models for homopolymer INDELs, they are calling vastly
 different number of 1bp heterozygous INDELs. It is still not clear to us that
-we can model PCR errors well. Maybe the most effective solution to such errors
+we can model PCR errors well. Maybe the most effective solution
 is to avoid PCR in sample preparation.
 
 Potential PCR errors are not the only error source. On the NA12878 data, which
@@ -508,7 +508,7 @@ Thresholds are chosen such that they approximately evenly divide variants into
 \subsection{The maximum read depth filter}
 
 \subsubsection{The effectiveness of the max depth filter}
-Other filters used in this work require a threshold on a single value. To study
+Other filters require a threshold on a single value. To study
 which filter is more effective, we used a ROC-like plot,
 Figure~\ref{fig:roc}. In this figure, the X-axis, the number of heterozygous
 SNPs in CHM1, is proportional to the false positive rate; the Y-axis, the
@@ -548,7 +548,7 @@ Variants callers usually call more variants from the BWA-MEM alignment
 
 \subsubsection{An alternative to the maximum depth filter}
 While the maximum depth filter is effective against false heterozygotes, it is
-only applicable to high-coverage data supposed to have uniform read depth. It
+only applicable to high-coverage data with uniform read depth. It
 does not work with exome sequencing data, or is not powerful on data with
 shallow coverage.
 
@@ -559,13 +559,13 @@ likelihoods~\citep{Li:2011ab}. We extracted sites satisfying: 1) the reported
 read depth above 25,000; 2) the inbreeding coefficient less than zero; 3) the
 P-value below $10^{-10}$. We then clustered the sites within 10kb into regions.
 These regions are susceptible to common CNVs or artifacts in the reference
-genome. We call this filter as the Hardy-Weinberg filter, or the HW filter.
+genome. We call this filter as the Hardy-Weinberg filter, or HW in brief.
 
 On CHM1, the HW filter is almost as effective as the maximum depth filter.
 It could be a valid alternative when the maximum depth filter cannot be
 amplified.  However, the derivation of the HW filter requires multiple
 thresholds and depends on populations, the mapper (BWA) and the caller
-(SAMtools). In the end, we decided to use the much simpler maximum depth filter
+(SAMtools). Therefore, we decided to use the much simpler maximum depth filter
 in this study.
 
 \subsection{Other filters}
@@ -618,7 +618,7 @@ and GRCh38 are more complete than GRCh37.
 
 \section{Discussions and Conclusions}
 A distinct feature of our works is the use of a haploid human sample, CHM1,
-where heterozygotes are supposed to be errors. This allows us to unbiasedly
+from which heterozygous calls are supposed to be errors. This allows us to unbiasedly
 investigate the causal artifacts and to experiment effective filters with the
 diploid NA12878 data set as a positive control.
 
@@ -645,11 +645,11 @@ it may be beneficial to filter out all variants overlapping these regions.
 Although over 50\% of single-sample INDEL calls fall in LCRs
 (Figure~\ref{fig:hist} and~\ref{fig:venn-NA12878}), only 1.25\% of autosomal
 INDELs in the ClinVar database (http://clinvar.com) overlap with LCRs -- most
-INDELs in LCRs have unknown clinical functionality. It should be safe to drop
+INDELs in LCRs have unknown clinical functionality. It should be safe to drop or downweigh
 them unless microsatellite INDELs are our focus.
 
 Outside LCRs, different call sets usually agree well with each other
-(Figure~\ref{fig:venn-NA12878}) if the same set of filters are applied. Based
+if the same set of filters are applied (Figure~\ref{fig:venn-NA12878}). Based
 on Figure~\ref{fig:hist}, we estimate that a caller usually makes a wrong call
 per 100--200kb without significant compromise on the sensitivity, similar to
 the previous estimates~\citep{Bentley:2008cr,Nickles:2012aa}. Many of these
