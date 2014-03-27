@@ -36,24 +36,59 @@ var getopt = function(args, ostr) {
 	return optopt;
 }
 
-var c, f_incl = 0, f_excl = 0;
-while ((c = getopt(arguments, 'f:F:')) != null) {
-	if (c == 'f') f_incl = parseInt(getopt.arg);
-	else if (c == 'F') f_excl = parseInt(getopt.arg);
+// parse command-line options
+var c, w1 = 1000, w2 = 10000, min_n = 2;
+while ((c = getopt(arguments, "w:W:n:")) != null) {
+	if (c == 'w') w1 = parseInt(getopt.arg);
+	else if (c == 'W') w2 = parseInt(getopt.arg);
+	else if (c == 'n') min_n = parseInt(getopt.arg);
 }
 
-var file = arguments.length > getopt.ind? new File(arguments[getopt.ind]) : new File();
+// read data
+var file = getopt.ind < arguments.length? new File(arguments[getopt.ind]) : new File();
 var buf = new Bytes();
-
+var seqs = {};
 while (file.readline(buf) >= 0) {
-	var t = buf.toString().split("\t", 7);
-	var m = /(0x[0-9a-fA-F]+)/.exec(t[6]);
-	if (m == null) throw Error("No HEX filters");
-	var f = parseInt(m[1]);
-	if (f_incl && !(f&f_incl)) continue;
-	if (f&f_excl) continue;
-	print(buf);
+	var t = buf.toString().split("\t");
+	if (seqs[t[0]] == null) seqs[t[0]] = [];
+	seqs[t[0]].push(parseInt(t[1]));
 }
-
 buf.destroy();
 file.close();
+
+// cluster
+function cluster(a, w1, w2)
+{
+	a.sort(function(b,c){return b-c});
+	var x = [], y = [];
+	for (var i = 0; i < a.length; ++i)
+		x.push([i, a[i] - 1, a[i], 1]);
+	for (var i = 0; i < a.length - 1; ++i)
+		y.push([a[i+1] - a[i], i]);
+
+	y.sort(function(b,c){return b[0]!=c[0]?b[0]-c[0]:b[1]-c[1]});
+	for (var j = 0; j < y.length && y[j][0] <= w2; ++j) {
+		var l = y[j][1] + 1;
+		if (x[l][0] != l)
+			throw Error("Bug!!!");
+		// find the parent of y[j][1]
+		var k = y[j][1], tmp = [];
+		while (x[k][0] != k)
+			tmp.push((k = x[k][0]));
+		for (var i = 0; i < tmp.length; ++i) x[tmp[i]][0] = k;
+		// test merge
+		if ((x[l][2] - x[k][1]) / (x[l][3] + x[k][3]) > w1) continue;
+		// merge l into k
+		x[k][2] = x[l][2]; x[k][3] += x[l][3];
+		x[l][0] = k;
+	}
+	y.length = 0;
+	return x;
+}
+
+for (var seq in seqs) {
+	var x = cluster(seqs[seq], w1, w2);
+	for (var i = 0; i < x.length; ++i)
+		if (x[i][0] == i && x[i][3] >= min_n)
+			print(seq, x[i][1], x[i][2], x[i][3]);
+}
