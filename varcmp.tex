@@ -11,7 +11,7 @@
 \begin{document}
 \firstpage{1}
 
-\title{Towards Better Understanding of Artifacts in High-Coverage Variant Calling}
+\title[Artifacts in variant calling]{Towards Better Understanding of Artifacts in Variant Calling from High-Coverage Samples}
 \author[Li]{Heng Li}
 
 \address{Broad Institute of Harvard and MIT, 7 Cambridge Center, Cambridge, MA 02142, USA}
@@ -319,7 +319,7 @@ assembly as an orthogonal approach to validate heterozygous calls.
 \section{Results}
 
 \begin{figure*}[!ht]
-\includegraphics[width=.5\textwidth]{qst5/hist-snp}\includegraphics[width=.5\textwidth]{qst5/hist-indel}
+\includegraphics[width=.5\textwidth]{hist-snp}\includegraphics[width=.5\textwidth]{hist-indel}
 \caption{Effect of filters. Low-complexity filter (LC): not overlapping
 low-complexity regions identified by the DUST algorithm. Maximum-depth filter
 (DP): read depth below $d+3\sqrt{d}$, where $d$ is the average read depth.
@@ -496,7 +496,7 @@ tools in our evaluation. There are still rooms for improvement.
 %NA12878 with a similar number of heterozygous INDELs from CHM1.
 
 \begin{figure}
-\includegraphics[width=.49\textwidth]{qst5/roc1-co4}
+\includegraphics[width=.49\textwidth]{roc1-co4}
 \caption{Effect of filters after removing variants in low-complexity regions.
 Each filter is associated with one value.  For each filter, the number of
 heterozygous SNPs called from CHM1 and NA12878 are counted accumulatively from
@@ -657,7 +657,7 @@ errors are likely to be systematic. In the context of somatic or \emph{de novo}
 mutation discovery by sample contrast, systematic errors will appear in all
 samples.  They will not lead to false mutation calls, fortunately.
 
-A simple method to improve variant accuracy is to use two distinct pipelines,
+A simple method to improve the variant accuracy is to use two distinct pipelines,
 take the intersection of the raw calls and then apply caller-oblivious filters
 to derive the final call set. As callers agree well on post-filtered sites
 (Figure~\ref{fig:venn-NA12878}) but badly on false positives
@@ -682,7 +682,7 @@ and Gilean McVean, personal communication), but a practical solution is yet to
 be reached.
 
 \section*{Acknowledgement}
-We are grateful to Richard Wilson and his team who sequenced the CHM1 cell line
+We are really grateful to Richard Wilson and his team who sequenced the CHM1 cell line
 and granted us the permission to use the data in this study. We also thank the
 1000 Genomes Project analysis group for the helpful comments and discussions.
 
