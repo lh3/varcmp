@@ -28,10 +28,10 @@ set origin 0, 1.04
 set tmargin 3
 set bmargin 0
 plot \
-	"hist.dat" u ($2*1e-3):xtic(1) t 'Filtered by LC' ls 1 fill pat 7, \
-	"" u ($4*1e-3) t 'Filtered by DP' ls 2 fill pat 8, \
+	"hist.dat" u ($8*1e-3):xtic(1) t 'Remained' ls 4 fill pat 10, \
 	"" u ($6*1e-3) t 'Filtered by misc' ls 3 fill pat 9, \
-	"" u ($8*1e-3) t 'Remained' ls 4 fill pat 10
+	"" u ($4*1e-3) t 'Filtered by DP' ls 2 fill pat 8, \
+	"" u ($2*1e-3) t 'Filtered by LC' ls 1 fill pat 7
 
 
 set ylab "#NA12878 heterozygous SNPs ({/Symbol \264}10^6)"
@@ -69,11 +69,11 @@ set origin 0, 1.04
 set tmargin 3
 set bmargin 0
 plot \
-	"hist.dat" u ($18*1e-3):xtic(1) t '{/Symbol \261}1bp, Filtered by LC' ls 5 fill pat 5, \
-	"" u (($3-$18)*1e-3) t '>1bp, Filtered by LC' ls 1 fill pat 6, \
-	"" u ($5*1e-3) t 'Filtered by DP' ls 2 fill pat 8, \
+	"hist.dat" u ($9*1e-3):xtic(1) t 'Remained' ls 4 fill pat 10, \
 	"" u ($7*1e-3) t 'Filtered by misc' ls 3 fill pat 9, \
-	"" u ($9*1e-3) t 'Remained' ls 4 fill pat 10
+	"" u ($5*1e-3) t 'Filtered by DP' ls 2 fill pat 8, \
+	"" u (($3-$18)*1e-3) t '>1bp, Filtered by LC' ls 1 fill pat 6, \
+	"" u ($18*1e-3):xtic(1) t '{/Symbol \261}1bp, Filtered by LC' ls 5 fill pat 5
 
 
 set ylab "#NA12878 heterozygous InDels ({/Symbol \264}10^3)"
