@@ -38,8 +38,9 @@ We estimated that the error rate of raw genotype calls is as high as 1 in
 10--15kb, but the error rate of post-filtered calls is reduced to 1 in
 100--200kb.
 
-\section{Availability:} BWA-MEM alignment: http://bit.ly/1g8XqRt. Scripts and
-additional data: http://figshare.com/account/projects/1013.
+\section{Availability:} BWA-MEM alignment: http://bit.ly/1g8XqRt\\
+Scripts: https//github.com/lh3/varcmp\\
+Additional data: http://figshare.com/account/projects/1013
 
 \section{Contact:} hengli@broadinstitute.org
 
@@ -468,7 +469,7 @@ region.}\label{fig:realign}
 \subsubsection{Realignment errors}
 When mapping a read to the reference genome, a read mapper chooses the optimal
 pairwise alignment for each read independent of others. For reads mapped to the
-same region, the combination of optimal pairwise alignment does not always
+same region, the combination of optimal pairwise alignments does not always
 yield the optimal multi-alignment of reads. If a variant caller simply trusts
 the suboptimal multi-alignment, it may produce false variants or genotypes
 (Figure~\ref{fig:realign}). Therefore, more recent variant callers, including
@@ -477,23 +478,20 @@ realignment for both SNP and INDEL calling.
 
 However, with our manual review, we found that variant callers often failed to
 produce the optimal realignment in LCRs. The majority of the reviewed
-$>$1bp heterozygous INDELs from CHM1 can be corrected with better realignment.
-Among these errors, some are surprisingly obvious to eyes. Some may be covered
-by a couple of reads supporting a second allele but the evidence is still
-strong that they are homozygous. The remaining errors are harder (e.g.
-Figure~\ref{fig:realign}), but can still be fixed with the help of local
-assembly and careful manual realignment. It is possible that a good realignment
-algorithm may replace our manual work and achieve higher accuracy than all the
-tools in our evaluation. There are still rooms for improvement.
+$>$1bp heterozygous INDELs from CHM1 can be corrected away with better
+realignment. Without the thorough understanding of the very details of the
+realignment process, we are unable to explain why the callers fail even on some
+obvious cases. Nonetheless, as we can often manually derive a better
+multi-alignment, it is possible that a good realignment algorithm may replace
+our manual work and achieve higher accuracy than all the tools in our
+evaluation.
 
-%With manual review, we generally feel HaplotypeCaller moderately outperforms
-%other callers on realignment. It is also able to correctly call variants that
-%are undiscoverable from pairwise alignment (Figure~\ref{fig:realign}). At the
-%same time, however, HaplotypeCaller tends to makes mistakes for INDELs not seen
-%from pairwise alignment especially around long poly-A/T runs. We speculate that
-%the high error rate around poly-A/T misleads HaplotypeCaller into wrong local
-%assembly. As a whole, haplotypeCaller produces the largest INDEL call set for
-%NA12878 with a similar number of heterozygous INDELs from CHM1.
+In the process of manual review, we found local assembly with fermi is
+frequently more effective than the INDEL callers, which may be due to the
+independence of the reference sequence, the requirement of long-range
+consistency and the more powerful topology based error
+cleaning~\citep{Zerbino:2008uq}. Some difficult errors such as
+Figure~\ref{fig:realign} are trivial to resolve with local assembly.
 
 \begin{figure}
 \includegraphics[width=.49\textwidth]{roc1-co4}
@@ -633,15 +631,12 @@ per 10--15kb.
 It was also to our surprise that the low-complexity filter is the most
 effective against false heterozygotes, especially short INDELs. Without the
 suggestion from Peter Sudmant (personal communication), we would not have tried
-this filter in the first place. It seems to us that realignment in LCRs
-still needs improvements, in addition to the existing efforts in this
-direction~\citep{Homer:2010aa,Li:2011kx,Albers:2011aa}. One possible improvement on realignment is to extensively rely on
-local assembly. During our manual review, we generally feel local assembly
-tends to make fewer genotyping errors as it requires consistencies between
-reads over a region longer than the read length.
+this filter in the first place. Realignment in LCRs
+still needs improvements in addition to the existing efforts in this
+direction~\citep{Homer:2010aa,Li:2011kx,Albers:2011aa}.
 
 Before we understand and resolve the issues in variant calling in LCRs,
-it may be beneficial to filter out all variants overlapping these regions.
+it may be better to filter out all variants overlapping these regions.
 Although over 50\% of single-sample INDEL calls fall in LCRs
 (Figure~\ref{fig:hist} and~\ref{fig:venn-NA12878}), only 1.25\% of autosomal
 INDELs in the ClinVar database (http://clinvar.com) overlap with LCRs -- most
@@ -670,7 +665,7 @@ from normal samples.
 Finally, the advances in sequencing technologies lead the development of
 algorithms. We are heavily relying on mapping based variant calling because
 with very sort reads or at low coverage, the traditional
-assembly-followed-by-mapping approach would not work. With increased read
+assembly-and-mapping approach would not work. With increased read
 lengths and decreased sequencing cost, we might go back to \emph{de novo}
 assembly. An assembly does not only encode small variants, but also
 retains large-scale structural variations and is free of the artifacts in the
@@ -679,7 +674,7 @@ ago~\citep{Li:2010kx} is to map sequence reads to the ensemble of
 multiple genomes. Recently, there have been significant progress towards this
 goal (\Citealp{DBLP:journals/corr/abs-1010-2656}; Deniz Kural, David Haussler
 and Gilean McVean, personal communication), but a practical solution is yet to
-be reached.
+be concluded.
 
 \section*{Acknowledgement}
 We are really grateful to Richard Wilson and his team who sequenced the CHM1 cell line
