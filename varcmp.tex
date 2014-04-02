@@ -58,8 +58,7 @@ the understanding of mutation processes~\citep{Veltman:2012aa,Campbell:2013aa}.
 In most of these studies, mapping based SNP/INDEL calling plays a central role.
 The accuracy of the calls has a fundamental impact on the biological
 interpretation. In this context, various research groups have attempted to
-evaluate the performance of variant calling or to build a benchmark data set
-for evaluation.
+evaluate the performance of variant calling.
 
 The simplest approach to the evaluation of variant calling is to simulate
 variants and reads from a reference genome~\citep{Li:2008zr}. However, we are
@@ -83,7 +82,7 @@ the ground truth~\citep{Harismendy:2009aa}. It does not capture large-scale
 artifacts, though. Another more commonly used method is to measure accuracy
 either by comparing variant calls from different pipelines, or by comparing
 calls to variants ascertained with array genotyping or in another
-study~\citep{Clark:2011aa,Li:2012fk,Lam:2012aa,Lam:2012fk,Boland:2013aa,Liu:2013aa,Goode:2013aa,ORawe:2013aa,Zook:2014aa}.
+study~\citep{Clark:2011aa,Li:2012fk,Lam:2012aa,Lam:2012fk,Boland:2013aa,Liu:2013aa,Goode:2013aa,ORawe:2013aa,Zook:2014aa,Cheng:2014aa}.
 However, array genotyping may have a higher error rate per assayed site than
 the variant calling error rate~\citep{Bentley:2008cr}; simply comparing call
 sets would only give us an estimate of the relative accuracy -- if two
@@ -97,11 +96,14 @@ Many studies also experimentally validated typically up to a few hundred
 variants with MiSeq or Sanger sequencing or Sequenom genotyping. Nonetheless,
 such experiments are biased towards easier regions and may also be subjected
 to other artifacts such as on-primer variants and non-specific amplification
-(the 1000 Genomes Project analysis subgroup, personal communication). For a
-recent example, although~\citet{Li:2011ac} have validated multiple \mbox{non-A-to-I}
-RNA editing sites with Sanger sequencing, many~(e.g. \Citealt{Pickrell:2012aa}) show
-strong evidence that \mbox{non-A-to-I} editings are technical artifacts. Sanger
-sequencing should not be taken as the ground truth.
+(the 1000 Genomes Project analysis subgroup, personal communication).
+Calling heterozygotes from Sanger sequence data is also challenging by itself.
+
+%For a
+%recent example, although~\citet{Li:2011ac} have validated multiple \mbox{non-A-to-I}
+%RNA editing sites with Sanger sequencing, many~(e.g. \Citealt{Pickrell:2012aa}) show
+%strong evidence that \mbox{non-A-to-I} editings are technical artifacts. Sanger
+%sequencing should not be taken as the ground truth.
 
 In the author's view, it is better to evaluate variant calling by
 comparing samples from a pedigree~\citep{Zook:2014aa}, or from the same
@@ -163,7 +165,7 @@ reads to hs37d5, the reference genome used by the 1000 Genomes Project in the
 final phase.
 
 After the initial alignment, we run Picard's MarkDuplicates on both data sets.
-Picard identified 20\% of CHM1 reads as PCR duplicates. For NA12878 reads,
+Picard identified 20\% of CHM1 reads as PCR duplicates. For NA12878,
 Picard reported 1.5\% of them as PCR duplicates, which are false positives as
 the library was constructed without amplification. We did not apply
 MarkDuplicates for NA12878 in the subsequent analysis.
@@ -182,8 +184,7 @@ data or when the base quality is not well calibrated.
 
 We called SNPs and short INDELs with FreeBayes~\citep{Garrison:2012aa}, GATK
 UnifiedGenotyper, Platypus, SAMtools and GATK HaplotypeCaller. The command
-lines can be found in Table~1. The detailed procedures are described as
-follows.
+lines can be found in Table~1. Additional details are as follows.
 
 \begin{table*}
 \footnotesize
@@ -218,7 +219,7 @@ than SAMtools. Genotype calling for a single sample is relatively simple.
 To avoid the subtle difference in this simple step complicating the final
 results, we re-call the genotypes from genotype likelihoods provided by the
 callers.  We multiplied $10^{-3}$ to the likelihood of heterozygotes and then
-called the genotype with the maximal likelihood.
+called the genotype with the maximum likelihood.
 
 Platypus does not give genotype likelihoods for multi-allelic variants. We
 kept the reported genotypes in the VCF.
@@ -274,9 +275,9 @@ below a threshold.
 
 \end{enumerate}
 
-Among these filters, LC is a regional filter and is entirely independent of the
-alignment and variant calling procedure. Although DP is computed from called
-variants, it is usually not greatly dependent on the mapper and the caller,
+Among these filters, LC is a regional filter and is entirely independent of
+alignment and variant calling. Although DP is computed from called
+variants, its effect is usually not greatly dependent on the mapper and the caller,
 either. The remaining filters may be dependent of the error models used by the
 callers. For example, SAMtools effectively gives a higher weight on variants
 supported on both strand; FreeBayes seems to require a variant to be supported
@@ -405,7 +406,7 @@ As a side technical note, we applied milder filters in
 Figure~\ref{fig:venn-CHM1} in comparison to Figure~\ref{fig:hist}. We found the
 intersection between call sets often becomes smaller with more stringent
 thresholds because stringent thresholds reduce the sensitivity in different
-aspects of call sets and amplify the subtle differences between callers. In
+aspects of call sets and amplify the subtle differences between calling algorithms. In
 addition, in Figure~\ref{fig:venn-CHM1}B, we were essentially clustering INDELs
 within 20bp from each other. Increasing the distance threshold to 100bp only
 changed the numbers slightly.
@@ -433,7 +434,7 @@ and realignment errors.
 
 \subsubsection{Potential PCR amplification errors}
 PCR errors are known to be responsible for many INDEL
-errors~\citep{1000g:2012aa}. On CHM1, we have observed many apparent 1bp
+errors in long homopolymer runs~\citep{1000g:2012aa}. On CHM1, we have observed many apparent 1bp
 heterozygous INDELs (Figure~\ref{fig:hist}) inserted to or deleted from long
 poly-A or poly-T runs, which may be due to PCR errors. Although most callers
 deploy advanced models for homopolymer INDELs, they are calling vastly
@@ -544,6 +545,15 @@ is called from the BWA-MEM alignment, but not from the Bowtie2 alignment.
 Variants callers usually call more variants from the BWA-MEM alignment
 (Figure~\ref{fig:hist}), many of which are located in segmental duplications.
 
+Another difference, not relevant to the mapping quality, comes from the alignment
+around long INDELs. HaplotypeCaller always called more $\ge$15bp INDELs from
+the BWA-MEM alignment. Other callers made three times as many $\ge$15bp
+deletion calls from the BWA-MEM alignment, either in LCRs or not, and called
+40\% more insertions outside LCRs. Interestingly, except HaplotypeCaller,
+others called more $\ge$15bp insertions from the Bowtie2 alignment in LCRs
+instead. We have not found a good explanation to the apparently conflictive
+observations.
+
 \subsubsection{An alternative to the maximum depth filter}
 While the maximum depth filter is effective against false heterozygotes, it is
 only applicable to high-coverage data with uniform read depth. It
@@ -564,7 +574,7 @@ It could be a valid alternative when the maximum depth filter cannot be
 amplified.  However, the derivation of the HW filter requires multiple
 thresholds and depends on populations, the mapper (BWA) and the caller
 (SAMtools). Therefore, we decided to use the much simpler maximum depth filter
-in this study.
+here.
 
 \subsection{Other filters}
 The remaining filters, including AB, DS, FS and QU (Section~\ref{sec:flt}), can
@@ -581,7 +591,7 @@ also tried variant calling with mem:hc without the MarkDuplicates step. Before
 filtering, this approach yields 3\% more heterozygous SNPs and 12\% more
 heterozygous INDELs, suggesting INDELs are more susceptible to PCR artifacts
 than SNPs. After filtering, the total numbers of SNPs and INDELs are about the
-same.
+same with or without duplicates.
 
 \begin{figure}[!hbtp]
 \centering
@@ -603,7 +613,7 @@ reads, so are called as \emph{decoy} sequences.
 We have also mapped the CHM1 reads to the GRCh37 and GRCh38 primary assemblies
 and called variants. The number of homozygous non-LC SNPs called from each
 reference is close: 2.408, 2.405 and 2.412 million from GRCh37, hs37d5 and
-GRCh38, respectively. However, the number of heterozygous SNPs/INDELs is
+GRCh38, respectively. However, the numbers of heterozygous SNPs/INDELs are
 distinct (Figure~\ref{fig:ref}).  We called twice as many as heterozygotes from
 GRCh37 in comparison to hs37d5.  This indicates that the 35.4Mb decoy sequences
 indeed attracted many mismapped reads and consequently improves the variant
@@ -681,7 +691,7 @@ We are really grateful to Richard Wilson and his team who sequenced the CHM1 cel
 and granted us the permission to use the data in this study. We also thank the
 1000 Genomes Project analysis group for the helpful comments and discussions.
 
-\paragraph{Funding\textcolon}
+\paragraph{Funding\textcolon} NHGRI U54HG003037.
 
 \bibliography{varcmp}
 \end{document}
