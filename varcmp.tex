@@ -39,7 +39,7 @@ We estimated that the error rate of raw genotype calls is as high as 1 in
 100--200kb without significant compromise on the sensitivity.
 
 \section{Availability:} BWA-MEM alignment: http://bit.ly/1g8XqRt\\
-Scripts: https//github.com/lh3/varcmp\\
+Scripts: https://github.com/lh3/varcmp\\
 Additional data: http://figshare.com/account/projects/1013
 
 \section{Contact:} hengli@broadinstitute.org
@@ -346,7 +346,7 @@ to somatic mutations, call sets generally have an error rate approximately 1 in
 \subsection{Checking the ploidy of CHM1}
 
 \begin{figure}
-\includegraphics[width=.24\textwidth]{venn2/CHM1-snp}\includegraphics[width=.24\textwidth]{venn2/CHM1-indel}
+\includegraphics[width=.24\textwidth]{CHM1-snp}\includegraphics[width=.24\textwidth]{CHM1-indel}
 \caption{Relationship between CHM1 heterozygous call sets. Raw variant calls were filtered
 with: variant quality no less than 30, allele balance above 20\%, Fisher strand
 P-value above 0.001 and maximum read depth below $d+4\sqrt{d}$, where $d$ is
@@ -414,8 +414,8 @@ changed the numbers slightly.
 \subsection{The low-complexity filter}\label{sec:lc}
 
 \begin{figure}[!htb]
-\includegraphics[width=.24\textwidth]{venn2/NA12878-nLC-snp}\includegraphics[width=.24\textwidth]{venn2/NA12878-LC-snp}\\
-\includegraphics[width=.24\textwidth]{venn2/NA12878-nLC-indel}\includegraphics[width=.24\textwidth]{venn2/NA12878-LC-indel}
+\includegraphics[width=.24\textwidth]{NA12878-nLC-snp}\includegraphics[width=.24\textwidth]{NA12878-LC-snp}\\
+\includegraphics[width=.24\textwidth]{NA12878-nLC-indel}\includegraphics[width=.24\textwidth]{NA12878-LC-indel}
 \caption{Relationship between NA12878 heterozygous call sets.}\label{fig:venn-NA12878}
 \end{figure}
 
@@ -595,7 +595,7 @@ same with or without duplicates.
 
 \begin{figure}[!hbtp]
 \centering
-\includegraphics[width=.35\textwidth]{venn2/ref}
+\includegraphics[width=.35\textwidth]{ref}
 \caption{Relationship of CHM1 heterozygous SNPs called from mappings to
 different reference genomes. CHM1 reads were mapped with BWA-MEM. Autosomal
 SNPs were called with GATK HaplotypeCaller and passed the low-complexity
