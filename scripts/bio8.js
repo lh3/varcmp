@@ -730,7 +730,8 @@ function main(args)
 		print("          plp2var  extract alleles from pileup output");
 		print("          var2vcf  convert plp2var output to VCF");
 		print("          cg2vcf   convert CG's masterVarBeta to VCF");
-		print("          bedovlp  counts lines overlapping in a second bed");
+		print("          bedovlp  counts lines overlapping in a second BED");
+		print("          bedcmpm  intersections between multiple sorted BED files");
 		print("          cbs      circular binary segmentation");
 		print("");
 		exit(1);
