@@ -571,7 +571,7 @@ genome. We call this filter as the Hardy-Weinberg filter, or HW in brief.
 
 On CHM1, the HW filter is almost as effective as the maximum depth filter.
 It could be a valid alternative when the maximum depth filter cannot be
-amplified.  However, the derivation of the HW filter requires multiple
+applied.  However, the derivation of the HW filter requires multiple
 thresholds and depends on populations, the mapper (BWA) and the caller
 (SAMtools). Therefore, we decided to use the much simpler maximum depth filter
 here.
@@ -614,7 +614,7 @@ We have also mapped the CHM1 reads to the GRCh37 and GRCh38 primary assemblies
 and called variants. The number of homozygous non-LC SNPs called from each
 reference is close: 2.408, 2.405 and 2.412 million from GRCh37, hs37d5 and
 GRCh38, respectively. However, the numbers of heterozygous SNPs/INDELs are
-distinct (Figure~\ref{fig:ref}).  We called twice as many as heterozygotes from
+distinct (Figure~\ref{fig:ref}).  We called twice as many heterozygotes from
 GRCh37 in comparison to hs37d5.  This indicates that the 35.4Mb decoy sequences
 indeed attracted many mismapped reads and consequently improves the variant
 calls in chromosomal regions.  GRCh38 further resolves 39.8k (=36.9k+2909)
@@ -674,7 +674,7 @@ from normal samples.
 
 Finally, the advances in sequencing technologies lead the development of
 algorithms. We are heavily relying on mapping based variant calling because
-with very sort reads or at low coverage, the traditional
+with very short reads or at low coverage, the traditional
 assembly-and-mapping approach would not work. With increased read
 lengths and decreased sequencing cost, we might go back to \emph{de novo}
 assembly. An assembly does not only encode small variants, but also
