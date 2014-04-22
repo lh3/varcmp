@@ -270,26 +270,32 @@ function b8_cbs(args)
  *** Parse one-sample VCF ***
  ****************************/
 
-function b8_parse_vcf1(t) // t = vcf_line.split("\t")
+function b8_parse_vcf1(t, first_allele_only) // t = vcf_line.split("\t")
 {
 	var a = [];
 	if (t.length < 6) return null;
 	t[1] = parseInt(t[1]) - 1; t[3] = t[3].toUpperCase(); t[4] = t[4].toUpperCase(); t[5] = parseFloat(t[5]);
 	var s = t[4].split(","); // list of ALT alleles
 	// find the genotype
-	var gt, match = /^(\d+)(\/|\|)(\d+)/.exec(t[9]);
-	if (match == null) { // special-casing samtools, as for single-sample, it effectively gives the genotype at FQ
-		var m2 = /FQ=([^;\t]+)/.exec(t[7]);
-		if (m2 == null) gt = /^\.\/\./.test(t[7])? 0 : -1; // special casing CG VCF
-		else gt = parseFloat(m2[1]) > 0? 1 : 0;
-	} else gt = parseInt(match[1]) != parseInt(match[3])? 1 : 0;
+	var gt, match = null;
+	if (t.length >= 10) {
+		match = /^(\d+)(\/|\|)(\d+)/.exec(t[9]);
+		if (match == null) { // special-casing samtools, as for single-sample, it effectively gives the genotype at FQ
+			var m2 = /FQ=([^;\t]+)/.exec(t[7]);
+			if (m2 == null) gt = /^\.\/\./.test(t[7])? 0 : -1; // special casing CG VCF
+			else gt = parseFloat(m2[1]) > 0? 1 : 0;
+		} else gt = parseInt(match[1]) != parseInt(match[3])? 1 : 0;
+	} else gt = 0; // if there are no genotypes, set the genotype to hom
 	// get CIGAR for freebayes
 	var m3 = /CIGAR=([^;\t]+)/.exec(t[7]);
 	var cigar = m3 != null? m3[1].split(",") : [];
 	if (cigar.length && cigar.length != s.length) throw Error("Inconsistent ALT and CIGAR");
 	// loop through each ALT allele
-	for (var i = 0; i < s.length; ++i) {
+	var n_alt = first_allele_only? 1 : s.length;
+	n_alt = n_alt < s.length? n_alt : s.length;
+	for (var i = 0; i < n_alt; ++i) {
 		var type; // 0=ts, 1=tv, 2=mnp, 3=ins, 4=del
+		if (s[i].charAt(0) == '<') continue; // SV or CNV
 		if (t[3].length == 1 && s[i].length == 1) { // SNP
 			type = ((t[3] == 'A' && s[i] == 'G') || (t[3] == 'G' && s[i] == 'A') || (t[3] == 'C' && s[i] == 'T') || (t[3] == 'T' && s[i] == 'C'))? 0 : 1;
 			a.push([t[5], type, gt, t[1], 0]);
@@ -337,8 +343,8 @@ function b8_parse_vcf1(t) // t = vcf_line.split("\t")
 
 function b8_qst1(args)
 {
-	var c, b = 0.02, show_hdr = false, min_q = 0, het_num = null, tstv = null, indel_bed = false, snp_pos = false;
-	while ((c = getopt(args, "SGhb:q:H:T:")) != null)
+	var c, b = 0.02, show_hdr = false, min_q = 0, het_num = null, tstv = null, indel_bed = false, snp_pos = false, first_allele_only = false;
+	while ((c = getopt(args, "SGh1b:q:H:T:")) != null)
 		if (c == 'b') b = parseFloat(getopt.arg);
 		else if (c == 'q') min_q = parseFloat(getopt.arg);
 		else if (c == 'h') show_hdr = true;
@@ -346,6 +352,7 @@ function b8_qst1(args)
 		else if (c == 'T') tstv = parseFloat(getopt.arg);
 		else if (c == 'G') indel_bed = true;
 		else if (c == 'S') snp_pos = true;
+		else if (c == '1') first_allele_only = true;
 
 	if (het_num != null && tstv != null) throw Error("-H and -T cannot be specified at the same time");
 
@@ -355,7 +362,7 @@ function b8_qst1(args)
 	while (file.readline(buf) >= 0) {
 		if (buf[0] == 35) continue;
 		var t = buf.toString().split("\t");
-		var u = b8_parse_vcf1(t);
+		var u = b8_parse_vcf1(t, first_allele_only);
 		if (u == null || u.length == 0 || u[0][0] < min_q) continue;
 		if (snp_pos) {
 			for (var i = 0; i < u.length; ++i)
