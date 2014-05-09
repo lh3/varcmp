@@ -7,7 +7,7 @@ set style line 4 lc rgb "#bbbbbb" lw 1;
 set style line 5 lc rgb "#999999" lw 1;
 
 set size 1, 2
-
+set key invert
 
 
 set out "hist-snp.eps"

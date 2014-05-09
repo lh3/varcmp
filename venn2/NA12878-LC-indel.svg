@@ -39,7 +39,7 @@
      id="namedview3089"
      showgrid="false"
      inkscape:zoom="0.89702957"
-     inkscape:cx="147.81558"
+     inkscape:cx="377.46241"
      inkscape:cy="692.98374"
      inkscape:window-x="0"
      inkscape:window-y="0"
@@ -339,7 +339,7 @@
        style="text-rendering:optimizeLegibility;"
        id="g3067">
       <path
-         style="fill:#bfbfbf;fill-opacity:1"
+         style="fill:#e5e5e5;fill-opacity:1"
          d="M369.7228 29.4347 C353.92 29.4347 338.0287 31.4587 322.2893 35.6761 C206.9178 66.5898 143.399 203.6425 180.416 341.7919 C212.383 461.0945 308.8723 542.2007 408.9062 542.2007 C424.7091 542.2007 440.6004 540.1766 456.3398 535.9593 C571.7112 505.0456 635.2301 367.9929 598.2131 229.8435 C566.246 110.5409 469.7567 29.4347 369.7228 29.4347 Z"
          id="path3069" />
       <path
@@ -361,6 +361,13 @@
            id="tspan3095"
            x="325.5188"
            y="66.887428">bt2:fb</tspan></text>
+      <rect
+         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         id="rect9622"
+         width="108.13467"
+         height="71.346588"
+         x="589.72412"
+         y="424.73517" />
       <text
          xml:space="preserve"
          style="font-size:28px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
@@ -416,6 +423,13 @@
            id="tspan3115"
            x="329.97797"
            y="102.56071">29.2k</tspan></text>
+      <rect
+         style="fill:#e5e5e5;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         id="rect9618"
+         width="40.132458"
+         height="26.754971"
+         x="550.70648"
+         y="201.77707" />
       <text
          xml:space="preserve"
          style="font-size:28px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
@@ -430,36 +444,57 @@
       <text
          xml:space="preserve"
          style="font-size:28px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
-         x="204.00664"
-         y="156.07066"
+         x="198.00664"
+         y="162.07066"
          id="text3121"
          sodipodi:linespacing="125%"><tspan
            sodipodi:role="line"
            id="tspan3123"
-           x="204.00664"
-           y="156.07066">17.0k</tspan></text>
+           x="198.00664"
+           y="162.07066">17.0k</tspan></text>
+      <rect
+         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         id="rect6902"
+         width="109.24947"
+         height="34.558506"
+         x="292.0751"
+         y="548.47693" />
       <text
          xml:space="preserve"
          style="font-size:28px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
-         x="294.30469"
+         x="299.87863"
          y="576.34668"
          id="text3125"
          sodipodi:linespacing="125%"><tspan
            sodipodi:role="line"
            id="tspan3127"
-           x="294.30469"
+           x="299.87863"
            y="576.34668">35.3k</tspan></text>
+      <rect
+         style="fill:#e5e5e5;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         id="rect6390"
+         width="96.986771"
+         height="43.476826"
+         x="351.159"
+         y="243.02431" />
       <text
          xml:space="preserve"
          style="font-size:28px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
-         x="352.27374"
-         y="272.00888"
+         x="360.07727"
+         y="275.35324"
          id="text3129"
          sodipodi:linespacing="125%"><tspan
            sodipodi:role="line"
            id="tspan3131"
-           x="352.27374"
-           y="272.00888">160k</tspan></text>
+           x="360.07727"
+           y="275.35324">160k</tspan></text>
+      <rect
+         style="fill:#e5e5e5;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         id="rect6900"
+         width="243.02431"
+         height="114.82341"
+         x="280.92719"
+         y="343.35544" />
       <text
          xml:space="preserve"
          style="font-size:28px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"

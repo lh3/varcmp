@@ -39,8 +39,8 @@
      id="namedview3089"
      showgrid="false"
      inkscape:zoom="0.89702957"
-     inkscape:cx="242.07819"
-     inkscape:cy="728.80189"
+     inkscape:cx="328.16338"
+     inkscape:cy="670.05287"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="0"
@@ -339,7 +339,7 @@
        id="g3067"
        style="text-rendering:optimizeLegibility;">
       <path
-         style="fill:#bfbfbf;fill-opacity:1"
+         style="fill:#e5e5e5;fill-opacity:1"
          d="M365.0388 26.6968 C228.7462 26.6968 107.2625 121.4401 79.9807 258.595 C48.8697 415.0002 152.0407 567.3303 310.4195 598.8337 C329.9127 602.7112 349.3336 604.5775 368.4628 604.5775 C504.7554 604.5775 626.2392 509.8342 653.521 372.6793 C684.6319 216.2742 581.4609 63.9441 423.0821 32.4406 C403.589 28.5632 384.1681 26.6968 365.0388 26.6968 Z"
          id="path3069" />
       <path
@@ -394,6 +394,14 @@
            id="tspan3123"
            x="85.838867"
            y="110.36425">6400</tspan></text>
+      <rect
+         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         id="rect11835"
+         width="89.183235"
+         height="25.640181"
+         x="248.59827"
+         y="601.98682"
+         ry="6.6887426" />
       <text
          xml:space="preserve"
          style="font-size:28px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
@@ -405,6 +413,13 @@
            id="tspan3127"
            x="249.71306"
            y="626.51221">63.5k</tspan></text>
+      <rect
+         style="fill:#e5e5e5;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         id="rect11827"
+         width="129.31569"
+         height="42.362038"
+         x="297.64905"
+         y="246.36868" />
       <text
          xml:space="preserve"
          style="font-size:28px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
@@ -416,6 +431,13 @@
            id="tspan3131"
            x="311.02655"
            y="277.58279">1.99M</tspan></text>
+      <rect
+         style="fill:#e5e5e5;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         id="rect11829"
+         width="248.59827"
+         height="121.51216"
+         x="238.56516"
+         y="335.55191" />
       <text
          xml:space="preserve"
          style="font-size:28px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"

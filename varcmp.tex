@@ -1,4 +1,4 @@
-\documentclass{bioinfo}
+\documentclass{bioinfo-ori}
 \copyrightyear{2014}
 \pubyear{2014}
 
@@ -38,9 +38,8 @@ We estimated that the error rate of raw genotype calls is as high as 1 in
 10--15kb, but the error rate of post-filtered calls is reduced to 1 in
 100--200kb without significant compromise on the sensitivity.
 
-\section{Availability:} BWA-MEM alignment: http://bit.ly/1g8XqRt\\
-Scripts: https://github.com/lh3/varcmp\\
-Additional data: http://figshare.com/account/projects/1013
+\section{Availability:} BWA-MEM alignment and raw variant calls are available at http://bit.ly/1g8XqRt
+Scripts and miscellaneous data at https://github.com/lh3/varcmp
 
 \section{Contact:} hengli@broadinstitute.org
 
@@ -83,7 +82,7 @@ artifacts, though. Another more commonly used method is to measure accuracy
 either by comparing variant calls from different pipelines, or by comparing
 calls to variants ascertained with array genotyping or in another
 study~\citep{Clark:2011aa,Li:2012fk,Lam:2012aa,Lam:2012fk,Boland:2013aa,Liu:2013aa,Goode:2013aa,ORawe:2013aa,Zook:2014aa,Cheng:2014aa}.
-However, array genotyping may have a higher error rate per assayed site than
+However, array genotyping is biased to easier portions of the genome and may have a higher error rate per assayed site than
 the variant calling error rate~\citep{Bentley:2008cr}; simply comparing call
 sets would only give us an estimate of the relative accuracy -- if two
 pipelines are affected by the same artifact that a third pipeline does
@@ -330,7 +329,8 @@ variants supported by non-reference reads on both strands and Fisher strand
 P-value is above 0.01. Filters are applied in the order of LC, DP and misc,
 with DP applied to variants passing LC, and misc applied to variants passing
 both LC and DP. For each call set, the total height of the bar gives the
-number of raw variant calls with the reported quality in VCF no less than 30.}\label{fig:hist}
+number of raw variant calls with the reported quality in VCF no less than 30.
+Note that the Y-axis has different scales.}\label{fig:hist}
 \end{figure*}
 
 When studying the effect of filters on variant calling, we initially applied
@@ -356,7 +356,7 @@ INDEL call sets. Two filtered INDELs are said to be \emph{linked} if the 3'-end
 of an INDEL is within 20bp from the 5'-end of the other INDEL, or vice versa.
 An INDEL \emph{cluster} is a connected component (not a clique) of linked
 INDELs. It is possible that in a cluster two INDELs are distant from each other
-but both overlap a third INDEL.  The Venn's diagram shows the number of INDEL
+but both overlap a third INDEL.  Venn's diagram shows the number of INDEL
 clusters falling in each category based on the sources of INDELs in each
 cluster. 15\% of SNPs and 91\% of INDELs in the 3-way intersections overlap
 low-complexity regions.}\label{fig:venn-CHM1}
@@ -383,9 +383,12 @@ Figure~\ref{fig:venn-CHM1} suggests the latter is the case.
 We also manually reviewed tens of heterozygotes called by multiple callers both
 on the data in this study and on Illumina data generated from other libraries
 (AC:SRR642626--SRR642635 and AC:SRR642750), which were mapped with the original BWA
-algorithm~\citep{Li:2009uq} by the 1000 Genomes Project analysis group. It
-appears to us that more than half of SNPs look evident in the alignment viewer,
-but many INDELs in low-complexity regions look like systematic errors called by
+algorithm~\citep{Li:2009uq} by the 1000 Genomes Project analysis group.
+%It appears to us that more than half of SNPs look evident in the alignment viewer,
+Reviewing the read evidence using an alignment viewer, it appears that more than half of the SNPs are real.
+Most of these SNPs have averaged read depth, non-overlap with known segmental duplications~(http://bit.ly/eelabdb)
+and are not associated with known error-prone motifs in Illumina sequencing~\citep{Nakamura:2011aa}.
+On the other hand, many INDELs in low-complexity regions look like systematic errors called by
 all callers (see also Section~\ref{sec:lc}).  We speculate there may be 5--20k
 heterozygotes in CHM1 with strong alignment support from multiple Illumina
 libraries. It is hard to get a more accurate estimate or to further tell the
@@ -399,15 +402,19 @@ to the PacBio data for now.
 Anyway, even if we assume the variant calls in the intersection are all present
 in the CHM1hTERT cell line, we should still be able to measure an error rate up
 to one error per 170kbp (=3Gbp/17.7k). Given that there are 10 times more raw
-heterozygous calls (Figure~\ref{fig:hist}), CHM1 is a `haploid enough' for the
-investigation of major sequencing/calling artifacts.
+heterozygous calls in NA12878 than CHM1 (Figure~\ref{fig:hist}), it seems likely that CHM1
+heterozygotes are likely errors from major sequencing/calling artifacts.
+
+%Given that there are 10 times more raw
+%heterozygous calls (Figure~\ref{fig:hist}), CHM1 is a `haploid enough' for the
+%investigation of major sequencing/calling artifacts.
 
 As a side technical note, we applied milder filters in
 Figure~\ref{fig:venn-CHM1} in comparison to Figure~\ref{fig:hist}. We found the
 intersection between call sets often becomes smaller with more stringent
 thresholds because stringent thresholds reduce the sensitivity in different
 aspects of call sets and amplify the subtle differences between calling algorithms. In
-addition, in Figure~\ref{fig:venn-CHM1}B, we were essentially clustering INDELs
+addition, in Figure~\ref{fig:venn-CHM1}B, we were clustering INDELs
 within 20bp from each other. Increasing the distance threshold to 100bp only
 changed the numbers slightly.
 
@@ -425,8 +432,8 @@ On CHM1, low-complexity regions (LCRs), 2\% of the human genome, harbor
 heterozygous INDELs in LCRs and $N_d^{GL}$ the number of NA12878 heterozygous
 INDELs in LCRs, $N_h^{GL}/N_d^{GL}$ estimates the FPR of heterozygotes. The FPR
 in LCRs is ranged from 10\% to as high as 40\% depending on call sets. With a
-similar estimator, the FPR of heterozygous INDELs outside LCRs is only a few
-percent. We have also tried lobSTR~\citep{Gymrek:2012aa}. It called 65k
+similar estimator, the FPR of heterozygous INDELs outside LCRs is much lower, about 1--8\% depending on call sets.
+We have also tried lobSTR~\citep{Gymrek:2012aa}. It called 65k
 heterozygous INDELs from microsatellites, still yielding a high FPR. To
 understand why errors are enriched in LCRs, we reviewed over 100 sites and
 identified two major sources of INDEL genotyping errors: potential PCR errors
@@ -442,13 +449,14 @@ different number of 1bp heterozygous INDELs. It is still not clear to us that
 we can model PCR errors well. Maybe the most effective solution
 is to avoid PCR in sample preparation.
 
-Potential PCR errors are not the only error source. On the NA12878 data, which
-is free of PCR amplifications, the call set intersection in LCRs is noticeably
-smaller than in high-complexity regions (Figure~\ref{fig:venn-NA12878}). In
-addition, PCR errors are believed to mainly affect INDELs in long homopolymer
-runs. They would not explain the small intersection between CHM1 heterozygous
-SNP call sets (Figure~\ref{fig:venn-CHM1}) and between PCR-free SNP call sets
-in LCRs (Figure~\ref{fig:venn-NA12878}).
+Potential PCR errors are not the only error source. On the PCR-free NA12878 data
+the call set intersection in LCRs is noticeably smaller than in high-complexity
+regions (Figure~\ref{fig:venn-NA12878}), which suggests the presence of other
+error sources in LCRs. In addition, PCR errors introduced during sample preparation are believed to affect
+SNPs to a lesser extend. The small intersections between CHM1 heterozygous SNP
+call sets (Figure~\ref{fig:venn-CHM1}), and between PCR-free SNP call sets in
+LCRs (Figure~\ref{fig:venn-NA12878}) should be caused by other types of
+errors.
 
 \begin{figure*}
 \includegraphics[width=\textwidth]{indel-exam}
@@ -478,7 +486,7 @@ HaplotypeCaller, Platypus and FreeBayes in this study, heavily rely on
 realignment for both SNP and INDEL calling.
 
 However, with our manual review, we found that variant callers often failed to
-produce the optimal realignment in LCRs. The majority of the reviewed
+produce the optimal realignment in LCRs. About 50--70\% of the reviewed
 $>$1bp heterozygous INDELs from CHM1 can be corrected away with better
 realignment. Without the thorough understanding of the very details of the
 realignment process, we are unable to explain why the callers fail even on some
@@ -501,8 +509,9 @@ Each filter is associated with one value.  For each filter, the number of
 heterozygous SNPs called from CHM1 and NA12878 are counted accumulatively from
 the most stringent threshold on the filter value to the most relax threshold.
 Thresholds are chosen such that they approximately evenly divide variants into
-100 bins. Each chosen threshold yields a point in the plot.}\label{fig:roc}
-\end{figure}
+100 bins. Each chosen threshold yields a point in the plot. An arrow points
+to a point on the DP curve when the corresponding read depth is right above
+$d+4\sqrt{d}$, where $d$ is the mean read depth across called variants.}\label{fig:roc} \end{figure}
 
 \subsection{The maximum read depth filter}
 
@@ -547,7 +556,7 @@ Variants callers usually call more variants from the BWA-MEM alignment
 
 Another difference, not relevant to the mapping quality, comes from the alignment
 around long INDELs. HaplotypeCaller always called more $\ge$15bp INDELs from
-the BWA-MEM alignment. Other callers made three times as many $\ge$15bp
+the BWA-MEM alignment (data not shown). Other callers made three times as many $\ge$15bp
 deletion calls from the BWA-MEM alignment, either in LCRs or not, and called
 40\% more insertions outside LCRs. Interestingly, except HaplotypeCaller,
 others called more $\ge$15bp insertions from the Bowtie2 alignment in LCRs
@@ -639,19 +648,23 @@ heterozygotes are calling errors. In the raw call set, we usually see an error
 per 10--15kb.
 
 It was also to our surprise that the low-complexity filter is the most
-effective against false heterozygotes, especially short INDELs. Without the
-suggestion from Peter Sudmant (personal communication), we would not have tried
-this filter in the first place. Realignment in LCRs
-still needs improvements in addition to the existing efforts in this
-direction~\citep{Homer:2010aa,Li:2011kx,Albers:2011aa}.
+effective against false heterozygotes, especially short INDELs. Although we
+knew that INDEL errors may be introduced by PCR during sample preparation, we
+underestimated its substantial effect. We were also unware that realignment of
+INDELs in LCRs remains a great challenge even after the many existing
+efforts in this
+direction~\citep{Homer:2010aa,Li:2011kx,Albers:2011aa,Narzisi:2014aa}. Without
+the suggestion from Peter Sudmant (personal communication), we would not have
+tried this
+filter.
 
 Before we understand and resolve the issues in variant calling in LCRs,
-it may be better to filter out all variants overlapping these regions.
+it might be better to filter out all variants overlapping these regions.
 Although over 50\% of single-sample INDEL calls fall in LCRs
 (Figure~\ref{fig:hist} and~\ref{fig:venn-NA12878}), only 1.25\% of autosomal
 INDELs in the ClinVar database (http://clinvar.com) overlap with LCRs -- most
-INDELs in LCRs have unknown clinical functionality. It should be safe to drop or downweigh
-them unless microsatellite INDELs are our focus.
+INDELs in LCRs have unknown clinical functionality. For certain applications, it might be safe to drop or downweigh
+these difficult calls.
 
 Outside LCRs, different call sets usually agree well with each other
 if the same set of filters are applied (Figure~\ref{fig:venn-NA12878}). Based
@@ -682,14 +695,15 @@ retains large-scale structural variations and is free of the artifacts in the
 reference genome. Another possible direction which we mentioned four years
 ago~\citep{Li:2010kx} is to map sequence reads to the ensemble of 
 multiple genomes. Recently, there have been significant progress towards this
-goal (\Citealp{DBLP:journals/corr/abs-1010-2656}; Deniz Kural, David Haussler
-and Gilean McVean, personal communication), but a practical solution is yet to
+goal~\citep{DBLP:journals/corr/abs-1010-2656,Paten:2014aa}, but a practical solution is yet to
 be concluded.
 
 \section*{Acknowledgement}
 We are really grateful to Richard Wilson and his team who sequenced the CHM1 cell line
 and granted us the permission to use the data in this study. We also thank the
-1000 Genomes Project analysis group for the helpful comments and discussions.
+1000 Genomes Project analysis group for the helpful comments and discussions,
+and thank Mike Lin and the anonymous reviewers whose comments have helped us to
+improve the manuscript.
 
 \paragraph{Funding\textcolon} NHGRI U54HG003037; NIH GM100233
 

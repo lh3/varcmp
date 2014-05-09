@@ -29,22 +29,26 @@ set rmargin 0
 
 set title "fb"
 set size .35,.5
+set arrow from 33,2.09 to 41,2.05
 plot 'CHM1.bt2.fb.flt.qual' u (($16+$18)*1e-3):(($5+$7-$16-$18)*1e-6) t 'QU' w lp, \
 	 'CHM1.bt2.fb.flt.qDP' u (($16+$18)*1e-3):(($5+$7-$16-$18)*1e-6) t 'DP' ls 2 w lp, \
 	 'CHM1.bt2.fb.flt.qAB' u (($16+$18)*1e-3):(($5+$7-$16-$18)*1e-6) t 'AB' ls 3 w lp, \
 	 'CHM1.bt2.fb.flt.qFS' u (($16+$18)*1e-3):(($5+$7-$16-$18)*1e-6) t 'FS' ls 4 w lp, \
 	 'CHM1.bt2.fb.flt.qDS' u (($16+$18)*1e-3):(($5+$7-$16-$18)*1e-6) t 'DS' ls 6 w lp
 set ytics format ""
+unset arrow
 unset ylab
 
 set y2lab "bt2"
 set title "ug"
 set size .35,.5
 set origin .47,.61
+set arrow from 69,2.14 to 87,2.12
 plot 'CHM1.bt2.ug.flt.qual' u (($16+$18)*1e-3):(($5+$7-$16-$18)*1e-6) not ls 1 w lp, \
 	 'CHM1.bt2.ug.flt.qDP' u (($16+$18)*1e-3):(($5+$7-$16-$18)*1e-6) not ls 2 w lp, \
 	 'CHM1.bt2.ug.flt.qAB' u (($16+$18)*1e-3):(($5+$7-$16-$18)*1e-6) not ls 3 w lp, \
 	 'CHM1.bt2.ug.flt.qFS' u (($16+$18)*1e-3):(($5+$7-$16-$18)*1e-6) not ls 4 w lp
+unset arrow
 unset y2lab
 
 
@@ -55,17 +59,20 @@ unset title
 
 set size .35,.5
 set ytics .1
+set arrow from 43,2.13 to 51,2.10
 plot 'CHM1.mem.fb.flt.qual' u (($16+$18)*1e-3):(($5+$7-$16-$18)*1e-6) not ls 1 w lp, \
 	 'CHM1.mem.fb.flt.qDP' u (($16+$18)*1e-3):(($5+$7-$16-$18)*1e-6) not ls 2 w lp, \
 	 'CHM1.mem.fb.flt.qAB' u (($16+$18)*1e-3):(($5+$7-$16-$18)*1e-6) not ls 3 w lp, \
 	 'CHM1.mem.fb.flt.qFS' u (($16+$18)*1e-3):(($5+$7-$16-$18)*1e-6) not ls 4 w lp, \
 	 'CHM1.mem.fb.flt.qDS' u (($16+$18)*1e-3):(($5+$7-$16-$18)*1e-6) not ls 6 w lp
+unset arrow
 
 set y2lab "mem"
 set xtics format ""
 unset xlab
 set size .35,.5
 set origin .47,.11
+set arrow from 45,2.13 to 63,2.102
 plot 'CHM1.mem.ug.flt.qual' u (($16+$18)*1e-3):(($5+$7-$16-$18)*1e-6) not ls 1 w lp, \
 	 'CHM1.mem.ug.flt.qDP' u (($16+$18)*1e-3):(($5+$7-$16-$18)* 1e-6) not ls 2 w lp, \
 	 'CHM1.mem.ug.flt.qAB' u (($16+$18)*1e-3):(($5+$7-$16-$18)* 1e-6) not ls 3 w lp, \
