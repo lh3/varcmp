@@ -1,4 +1,4 @@
-\newcommand\classname{bioinfo2}
+\newcommand\classname{bioinfo-pre}
 \newcommand\lastmodifieddate{2003/02/08}
 \newcommand\versionnumber{0.1}
 
